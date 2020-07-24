@@ -16,10 +16,10 @@ StartSlotMachine:
 	inc a	
 	cp b
 	jr z, .match
-	ld a, 253
+	ld a, 217
 	jr .next
 .match
-	ld a, 250
+	ld a, 192
 	
 .next
 	ld [wSlotMachineSevenAndBarModeChance], a
