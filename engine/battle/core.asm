@@ -271,9 +271,8 @@ StartBattle:	;joedebug - start of the battle
 .notOutOfSafariBalls
 	callab PrintSafariZoneBattleText
 	ld a, [wEnemyMonSpeed + 1]
-	add a
-	ld b, a ; init b (which is later compared with random value) to (enemy speed % 256) * 2
-	jp c, EnemyRan ; if (enemy speed % 256) > 127, the enemy runs
+	srl a
+	ld b, a ; init b (which is later compared with random value) to (enemy speed % 256) / 2
 	ld a, [wSafariBaitFactor]
 	and a ; is bait factor 0?
 	jr z, .checkEscapeFactor
