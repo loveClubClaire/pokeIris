@@ -383,7 +383,7 @@ _OaksLabText_44201::
 _OaksLabText_44206::
 	text "You're on the"
 	line "right track! "
-	cont "Get a FLASH HM"
+	cont "Get a LANTERN"
 	cont "from my AIDE!"
 	done
 

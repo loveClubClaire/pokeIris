@@ -3,7 +3,7 @@ _DiglettsCaveRoute2Text1::
 	line "TUNNEL, but it's"
 	cont "dark and scary."
 
-	para "If a #MON's"
-	line "FLASH could light"
+	para "If a LANTERN"
+	line "could light"
 	cont "it up..."
 	done

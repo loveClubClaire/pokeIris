@@ -82,7 +82,7 @@ ItemNames:
 	db "MAX ETHER@"
 	db "ELIXER@"
 	db "MAX ELIXER@"
-	db "B2F@"
+	db "LANTERN@"
 	db "B1F@"
 	db "1F@"
 	db "2F@"
@@ -96,3 +96,4 @@ ItemNames:
 	db "10F@"
 	db "11F@"
 	db "B4F@"
+	db "B2F@"

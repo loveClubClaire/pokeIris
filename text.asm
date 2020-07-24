@@ -2687,8 +2687,8 @@ _CyclingIsFunText::
 	line "Forget SURFing!"
 	prompt
 
-_FlashLightsAreaText::
-	text "A blinding FLASH"
+_LanternLightsAreaText::
+	text "The LANTERN"
 	line "lights the area!"
 	prompt
 

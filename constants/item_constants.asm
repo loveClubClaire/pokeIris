@@ -85,7 +85,7 @@ SAFARI_ROCK           EQU $16 ; overload
 	const MAX_ETHER     ; $51
 	const ELIXER        ; $52
 	const MAX_ELIXER    ; $53
-	const FLOOR_B2F     ; $54
+	const LANTERN       ; $54
 	const FLOOR_B1F     ; $55
 	const FLOOR_1F      ; $56
 	const FLOOR_2F      ; $57
@@ -99,7 +99,8 @@ SAFARI_ROCK           EQU $16 ; overload
 	const FLOOR_10F     ; $5F
 	const FLOOR_11F     ; $60
 	const FLOOR_B4F     ; $61
-
+	const FLOOR_B2F		; $62
+	
 const_value = $C4
 
 	const HM_01         ; $C4

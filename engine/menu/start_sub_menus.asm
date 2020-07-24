@@ -190,7 +190,7 @@ StartMenu_Pokemon:
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
 .flashLightsAreaText
-	TX_FAR _FlashLightsAreaText
+	TX_FAR _LanternLightsAreaText
 	db "@"
 .dig
 	ld a, ESCAPE_ROPE
@@ -499,6 +499,7 @@ UsableItems_CloseMenu:
 	db OLD_ROD
 	db GOOD_ROD
 	db SUPER_ROD
+	db LANTERN
 	db $ff
 
 StartMenu_TrainerInfo:

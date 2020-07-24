@@ -7,11 +7,11 @@ Route2GateTextPointers:
 
 Route2GateText1:
 	TX_ASM
-	CheckEvent EVENT_GOT_HM05
+	CheckEvent EVENT_GOT_LANTERN
 	jr nz, .asm_5d60d
 	ld a, 10 ; pokemon needed
 	ld [hOaksAideRequirement], a
-	ld a, HM_05 ; oak's aide reward
+	ld a, LANTERN ; oak's aide reward
 	ld [hOaksAideRewardItem], a
 	ld [wd11e], a
 	call GetItemName
@@ -23,7 +23,7 @@ Route2GateText1:
 	ld a, [hOaksAideResult]
 	cp $1
 	jr nz, .asm_5d613
-	SetEvent EVENT_GOT_HM05
+	SetEvent EVENT_GOT_LANTERN
 .asm_5d60d
 	ld hl, Route2GateText_5d616
 	call PrintText

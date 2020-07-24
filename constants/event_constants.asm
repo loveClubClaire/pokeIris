@@ -984,7 +984,7 @@ const_value = 0
 	const EVENT_3D5                                  ; 3D5, (D7C1, bit 5)
 	const EVENT_3D6                                  ; 3D6, (D7C1, bit 6)
 	const EVENT_3D7                                  ; 3D7, (D7C1, bit 7)
-	const EVENT_GOT_HM05                             ; 3D8, (D7C2, bit 0)
+	const EVENT_GOT_LANTERN                          ; 3D8, (D7C2, bit 0)
 	const EVENT_3D9                                  ; 3D9, (D7C2, bit 1)
 	const EVENT_3DA                                  ; 3DA, (D7C2, bit 2)
 	const EVENT_3DB                                  ; 3DB, (D7C2, bit 3)

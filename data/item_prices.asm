@@ -82,7 +82,7 @@ ItemPrices:
 	money 0     ; MAX_ETHER
 	money 0     ; ELIXER
 	money 0     ; MAX_ELIXER
-	money 0     ; FLOOR_B2F
+	money 0     ; LANTERN
 	money 0     ; FLOOR_B1F
 	money 0     ; FLOOR_1F
 	money 0     ; FLOOR_2F
@@ -96,5 +96,5 @@ ItemPrices:
 	money 0     ; FLOOR_10F
 	money 0     ; FLOOR_11F
 	money 0     ; FLOOR_B4F
-	
+	money 0     ; FLOOR_B2F
 	

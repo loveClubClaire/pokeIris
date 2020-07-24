@@ -99,6 +99,7 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; MAX_ETHER
 	dw ItemUsePPRestore  ; ELIXER
 	dw ItemUsePPRestore  ; MAX_ELIXER
+	dw ItemUseLANTERN	 ; LANTERN
 
 ItemUseBall:
 
@@ -2239,6 +2240,21 @@ PPIncreasedText:
 
 PPRestoredText:
 	TX_FAR _PPRestoredText
+	db "@"
+
+ItemUseLANTERN:
+	ld a, [wIsInBattle]
+	and a
+	jp nz, ItemUseNotTime
+	xor a 						;Start LANTERN specific code 
+	ld [wMapPalOffset], a
+	ld hl, .lanternLightsAreaText
+	call PrintText
+	call GBPalWhiteOutWithDelay3
+	call ItemUseReloadOverworldData
+	ret
+.lanternLightsAreaText
+	TX_FAR _LanternLightsAreaText
 	db "@"
 
 ; for items that can't be used from the Item menu
