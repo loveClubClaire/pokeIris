@@ -2,12 +2,19 @@
 ; Constant enumeration is useful for monsters, items, moves, etc.
 const_def: MACRO
 const_value = 0
+IF _NARG >= 2
+const_inc = \2
+ELSE
+const_inc = 1
+ENDC
 ENDM
 
 const: MACRO
 \1 EQU const_value
 const_value = const_value + 1
 ENDM
+
+
 
 ; data format macros
 
@@ -239,4 +246,20 @@ ENDC
 	SHIFT
 	ENDR
 	db x
+ENDM
+
+const_skip: MACRO
+if _NARG >= 1
+const_value = const_value + const_inc * (\1)
+else
+const_value = const_value + const_inc
+endc
+ENDM
+
+const_next: MACRO
+if (const_value > 0 && \1 < const_value) || (const_value < 0 && \1 > const_value)
+fail "const_next cannot go backwards from {const_value} to \1"
+else
+const_value = \1
+endc
 ENDM

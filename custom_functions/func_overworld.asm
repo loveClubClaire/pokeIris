@@ -16,10 +16,13 @@ SoftlockTeleport:
 	ret
 	
 	
-;this function handles tracking of how bast to go on or off a bike
+;this function handles tracking of how fast to go on or off a bike
 ;biking ORs with $2
 ;running by holding B ORs with $1
 TrackRunBikeSpeed:
+	ld a, $55
+	ld [wBeatGymFlags], a
+
 	xor a
 	ld[wUnusedD119], a
 	ld a, [wWalkBikeSurfState]
@@ -27,7 +30,7 @@ TrackRunBikeSpeed:
 	call z, IsRidingBike
 	ld a, [hJoyHeld]
 	and B_BUTTON	;holding B to speed up? (non-zero value = TRUE)
-	;call nz, IsRunning	;joenote - uncomment this line to make holding B do double-speeed while walking/surfing/biking
+	call nz, IsRunning	;joenote - uncomment this line to make holding B do double-speeed while walking/surfing/biking
 	ld a, [wUnusedD119]
 	cp 2	;is biking without speedup being done?
 	jr z, .skip	;if not make the states a value from 1 to 4 (excluding biking without speedup, which needs to be 2)
@@ -36,11 +39,17 @@ TrackRunBikeSpeed:
 	ld[wUnusedD119], a
 	ret
 IsRidingBike:
+	ld a, $BC
+	ld [wBeatGymFlags], a
+
 	ld a, [wUnusedD119]
 	or $2
 	ld[wUnusedD119], a
 	ret
 IsRunning:
+	ld a, $AA
+	ld [wBeatGymFlags], a
+
 	ld a, [wUnusedD119]
 	or $1
 	ld[wUnusedD119], a
