@@ -20,9 +20,6 @@ SoftlockTeleport:
 ;biking ORs with $2
 ;running by holding B ORs with $1
 TrackRunBikeSpeed:
-	ld a, $55
-	ld [wBeatGymFlags], a
-
 	xor a
 	ld[wUnusedD119], a
 	ld a, [wWalkBikeSurfState]
@@ -39,17 +36,17 @@ TrackRunBikeSpeed:
 	ld[wUnusedD119], a
 	ret
 IsRidingBike:
-	ld a, $BC
-	ld [wBeatGymFlags], a
-
 	ld a, [wUnusedD119]
 	or $2
 	ld[wUnusedD119], a
 	ret
 IsRunning:
-	ld a, $AA
-	ld [wBeatGymFlags], a
-
+	ld a, [wWalkBikeSurfState]
+	and a  ; $00 = walking, if result is not 0, skip the running shoes check
+	jr nz, .changeSpeed 
+	CheckEvent EVENT_GOT_RUNNING_SHOES
+	ret z
+.changeSpeed
 	ld a, [wUnusedD119]
 	or $1
 	ld[wUnusedD119], a
