@@ -705,6 +705,10 @@ ItemUseSurfboard:
 	call .makePlayerMoveForward
 	ld hl, wd730
 	set 7, [hl]
+
+	ld hl, wBeatGymFlags
+	ld [hl], $03
+
 	ld a, 2
 	ld [wWalkBikeSurfState], a ; change player state to surfing
 	call PlayDefaultMusic ; play surfing music

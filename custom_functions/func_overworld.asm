@@ -25,6 +25,9 @@ TrackRunBikeSpeed:
 	ld a, [wWalkBikeSurfState]
 	dec a ; riding a bike? (0 value = TRUE)
 	call z, IsRidingBike
+	dec a ; surfing? (0 value = true)
+	call z, IsSurfing
+
 	ld a, [hJoyHeld]
 	and B_BUTTON	;holding B to speed up? (non-zero value = TRUE)
 	call nz, IsRunning	;joenote - uncomment this line to make holding B do double-speeed while walking/surfing/biking
@@ -40,12 +43,33 @@ IsRidingBike:
 	or $2
 	ld[wUnusedD119], a
 	ret
+IsSurfing:
+	ld a, [wBeatGymFlags]
+	and a ; $00 = Surf HM, if result is zero, return without a speed boost 
+	ret z 
+
+	ld a, [wUnusedD119]
+	or $2
+	ld[wUnusedD119], a
+	ret
 IsRunning:
+	ld hl, wBeatGymFlags
+	ld a,[wWalkBikeSurfState]
+	inc a
+	xor a, [hl] 
+	inc l
+	ld[hl], a
+	jr z, .changeSpeed
+
+	cp a, $03
+	ret z
+
 	ld a, [wWalkBikeSurfState]
 	and a  ; $00 = walking, if result is not 0, skip the running shoes check
 	jr nz, .changeSpeed 
 	CheckEvent EVENT_GOT_RUNNING_SHOES
 	ret z
+
 .changeSpeed
 	ld a, [wUnusedD119]
 	or $1
