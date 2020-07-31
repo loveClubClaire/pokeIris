@@ -44,32 +44,30 @@ IsRidingBike:
 	ld[wUnusedD119], a
 	ret
 IsSurfing:
-	ld a, [wBeatGymFlags]
-	and a ; $00 = Surf HM, if result is zero, return without a speed boost 
+	ld a, [wSurfState]
+	and a ; $00 = Surf HM. If surfing via pokemon, this routine does nothing. If surfboarding we OR by $2
 	ret z 
-
 	ld a, [wUnusedD119]
 	or $2
 	ld[wUnusedD119], a
 	ret
 IsRunning:
-	ld hl, wBeatGymFlags
+	;If player is surfing on the surfboard, change the speed 
+	ld hl, wSurfState
 	ld a,[wWalkBikeSurfState]
 	inc a
 	xor a, [hl] 
-	inc l
-	ld[hl], a
 	jr z, .changeSpeed
-
+	;Else if the player is just surfing, return with no speed change
 	cp a, $03
 	ret z
-
+	;Else if the player is not walking (i.e. biking), change the speed 
 	ld a, [wWalkBikeSurfState]
 	and a  ; $00 = walking, if result is not 0, skip the running shoes check
 	jr nz, .changeSpeed 
+	;Else, player is walking, check if they have running shoes. If so, speedup. Otherwise, return 
 	CheckEvent EVENT_GOT_RUNNING_SHOES
 	ret z
-
 .changeSpeed
 	ld a, [wUnusedD119]
 	or $1

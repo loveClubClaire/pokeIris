@@ -172,10 +172,8 @@ StartMenu_Pokemon:
 	ld a, [wActionResultOrTookBattleTurn]
 	and a
 	jp z, .loop
-
-	ld hl, wBeatGymFlags
+	ld hl, wSurfState ;Set surfState to Pokemon surfing
 	ld [hl], $00
-
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
 .strength

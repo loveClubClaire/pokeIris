@@ -2980,6 +2980,9 @@ wWalkBikeSurfState:: ; d700
 ; $02 = surfing
 	ds 1
 
+wSurfState:: ; d701
+; $00 = Pokemon surfing
+; $03 = Surfboard surfing
 	ds 10
 
 wTownVisitedFlag:: ; d70b
