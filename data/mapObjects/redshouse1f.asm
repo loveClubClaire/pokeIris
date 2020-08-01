@@ -9,8 +9,9 @@ RedsHouse1FObject:
 	db 1 ; signs
 	sign 3, 1, 2 ; TV
 
-	db 1 ; objects
+	db 2 ; objects
 	object SPRITE_MOM, 5, 4, STAY, LEFT, 1 ; Mom
+	object SPRITE_SLOWBRO, 2, 2, WALK, $D4, 3 ; Mr Mime
 
 	; warp-to
 	warp_to 2, 7, REDS_HOUSE_1F_WIDTH

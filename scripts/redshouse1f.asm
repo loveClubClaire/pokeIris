@@ -4,6 +4,7 @@ RedsHouse1FScript:
 RedsHouse1FTextPointers:
 	dw RedsHouse1FText1
 	dw RedsHouse1FText2
+	dw RedsHouse1FText3
 
 RedsHouse1FText1: ; Mom
 	TX_ASM
@@ -67,3 +68,8 @@ StandByMeText:
 TVWrongSideText:
 	TX_FAR _TVWrongSideText
 	db "@"
+
+RedsHouse1FText3: ; Mr. Mime
+	TX_FAR _MrMimeText
+	db "@"
+
