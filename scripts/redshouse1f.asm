@@ -8,6 +8,18 @@ RedsHouse1FTextPointers:
 
 RedsHouse1FText1: ; Mom
 	TX_ASM
+
+	CheckEvent EVENT_GOT_POKEDEX		;Have Pokedex
+	jr z, .check
+	CheckEvent EVENT_GOT_RUNNING_SHOES	;Do not have running shoes
+	jr nz, .check
+
+	ld hl, MomRunningShoesText
+	call PrintText
+	SetEvent EVENT_GOT_RUNNING_SHOES
+	jp .done
+
+.check
 	ld a, [wd72e]
 	bit 3, a
 	jr nz, .heal ; if player has received a Pokémon from Oak, heal team
@@ -21,6 +33,10 @@ RedsHouse1FText1: ; Mom
 
 MomWakeUpText:
 	TX_FAR _MomWakeUpText
+	db "@"
+
+MomRunningShoesText:
+	TX_FAR _MomRunningShoesText
 	db "@"
 
 MomHealPokemon:

@@ -1,6 +1,6 @@
 _MomWakeUpText::
 	text "MOM: Right."
-	line "All boys leave"
+	line "All kids leave"
 	cont "home some day."
 	cont "It said so on TV."
 
@@ -20,6 +20,14 @@ _MomHealText2::
 	line "You and your"
 	cont "#MON are"
 	cont "looking great!"
+	cont "Take care now!"
+	done
+
+_MomRunningShoesText::
+	text "MOM: <PLAYER>!"
+	line "Before you go"
+	cont "take zoom shoes"
+	cont "Press B to use"
 	cont "Take care now!"
 	done
 
