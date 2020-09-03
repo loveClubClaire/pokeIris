@@ -7,6 +7,9 @@
 # no binaries
 *.exe
 
+# macOS bookeeping 
+*.DS_Store
+
 # roms
 *.gbc
 *.gb
