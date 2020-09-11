@@ -387,16 +387,37 @@ FishingAnim:
 	ld c, 10
 	call DelayFrames
 	ld hl, wd736
+
+
 	set 6, [hl] ; reserve the last 4 OAM entries
+
+	ld a, [wPlayerGender] ;gender check
+    and a      
+    jr z, .BoySpriteLoad
+    push af
+	ld de, LeafSprite
+	lb bc, BANK(LeafSprite), $0c
+	pop af
+	ld hl, vNPCSprites
+
+	jr .KeepLoadingSpriteStuff
+
+.BoySpriteLoad
 	push af
 	ld de, RedSprite
 	lb bc, BANK(RedSprite), $c
 	pop af
 	ld hl, vNPCSprites
+.KeepLoadingSpriteStuff
 	call CopyVideoData
 	ld a, $4
-	ld hl, RedFishingTiles
+	ld hl, RedFishingTiles ;Red and leaf share fishing tiles so there's no Gender check here 
 	call LoadAnimSpriteGfx
+
+
+
+
+
 	ld a, [wSpriteStateData1 + 2]
 	ld c, a
 	ld b, $0

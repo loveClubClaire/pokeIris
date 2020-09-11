@@ -2966,7 +2966,13 @@ wRoute18GateCurScript:: ; d669
 	ds 78
 wGameProgressFlagsEnd::
 
-	ds 56
+wPlayerGender::
+; $00 = male
+; $01 = female
+    ds 1
+
+; unused
+    ds 55
 
 wObtainedHiddenItemsFlags::
 	ds 14

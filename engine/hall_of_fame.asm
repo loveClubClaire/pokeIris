@@ -183,18 +183,38 @@ HoFMonInfoText:
 	next "TYPE2/@"
 
 HoFLoadPlayerPics:
-	ld de, RedPicFront
-	ld a, BANK(RedPicFront)
-	call UncompressSpriteFromDE
-	ld hl, sSpriteBuffer1
-	ld de, sSpriteBuffer0
-	ld bc, $310
-	call CopyData
-	ld de, vFrontPic
-	call InterlaceMergeSpriteBuffers
-	ld de, RedPicBack
-	ld a, BANK(RedPicBack)
-	call UncompressSpriteFromDE
+    ld a, [wPlayerGender] ; gender check
+    and a      			
+    jr nz, .GirlStuff1
+    ld de, RedPicFront
+    ld a, BANK(RedPicFront)
+    jr .Routine 		  ; skip the girl routine and go to main routine
+.GirlStuff1
+    ld de, LeafPicFront
+    ld a, BANK(LeafPicFront)
+.Routine 				  ; resume original routine
+    call UncompressSpriteFromDE
+    ld hl, sSpriteBuffer1
+    ld de, sSpriteBuffer0
+    ld bc, $310
+    call CopyData
+    ld de, vFrontPic
+    call InterlaceMergeSpriteBuffers
+    ld a, [wPlayerGender] ; gender check
+    and a      
+    jr nz, .GirlStuff2
+    ld de, RedPicBack
+    ld a, BANK(RedPicBack)
+    jr .routine2 		  ; skip the girl routine and continue original routine if boy
+.GirlStuff2
+    ld de, LeafPicBack
+    ld a, BANK(LeafPicBack)
+.routine2 				  ; original routine
+    call UncompressSpriteFromDE
+
+
+
+
 	predef ScaleSpriteByTwo
 	ld de, vBackPic
 	call InterlaceMergeSpriteBuffers

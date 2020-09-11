@@ -1872,6 +1872,11 @@ RunMapScript::
 
 LoadWalkingPlayerSpriteGraphics::
 	ld de, RedSprite
+	ld a, [wPlayerGender]
+    and a
+    jr z, .IsBoyI
+    ld de,LeafSprite
+.IsBoyI
 	jr LoadPlayerSpriteGraphicsCommon
 
 LoadSurfingPlayerSpriteGraphics::
@@ -1880,6 +1885,11 @@ LoadSurfingPlayerSpriteGraphics::
 
 LoadBikePlayerSpriteGraphics::
 	ld de, RedCyclingSprite
+    ld a, [wPlayerGender]
+    and a
+    jr z, .AreGuy2
+    ld de,LeafCyclingSprite
+.AreGuy2
 
 LoadPlayerSpriteGraphicsCommon::
 	ld hl, vNPCSprites
