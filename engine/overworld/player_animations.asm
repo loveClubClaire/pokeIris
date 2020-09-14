@@ -409,10 +409,18 @@ FishingAnim:
 	pop af
 	ld hl, vNPCSprites
 .KeepLoadingSpriteStuff
-	call CopyVideoData
-	ld a, $4
-	ld hl, RedFishingTiles ;Red and leaf share fishing tiles so there's no Gender check here 
-	call LoadAnimSpriteGfx
+    call CopyVideoData
+    ld a, [wPlayerGender] ; gender check
+    and a     
+    jr z, .BoyTiles ; skip loading Leaf's stuff if you're Red
+    ld a, $4
+    ld hl, LeafFishingTiles
+    jr .ContinueRoutine ; go back to main routine after loading Leaf's stuff
+.BoyTiles ; alternately, load Red's stuff
+    ld a, $4
+    ld hl, RedFishingTiles
+.ContinueRoutine
+    call LoadAnimSpriteGfx
 
 
 
@@ -526,6 +534,23 @@ RedFishingTiles:
 	dw RedFishingRodTiles
 	db 3, BANK(RedFishingRodTiles)
 	dw vNPCSprites2 + $7d0
+
+LeafFishingTiles: ; newly added table of Leaf's sprites
+    dw LeafFishingTilesFront
+    db 2, BANK(LeafFishingTilesFront)
+    dw vNPCSprites + $20
+
+    dw LeafFishingTilesBack
+    db 2, BANK(LeafFishingTilesBack)
+    dw vNPCSprites + $60
+
+    dw LeafFishingTilesSide
+    db 2, BANK(LeafFishingTilesSide)
+    dw vNPCSprites + $a0
+
+    dw RedFishingRodTiles
+    db 3, BANK(RedFishingRodTiles)
+    dw vNPCSprites2 + $7d0
 
 _HandleMidJump:
 	ld a, [wPlayerJumpingYScreenCoordsIndex]
