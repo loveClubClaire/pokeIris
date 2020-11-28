@@ -2457,6 +2457,14 @@ _PlayerBlackedOutText::
 _RepelWoreOffText::
 	text "REPEL's effect"
 	line "wore off."
+	
+	para "use another"
+	line "REPEL?"
+	done
+
+_RepelUseAnotherText::
+	text "Another REPEL"
+	line "was used"
 	done
 
 _PokemartBuyingGreetingText::

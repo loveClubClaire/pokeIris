@@ -1285,10 +1285,24 @@ PlayerBlackedOutText::
 DisplayRepelWoreOffText::
 	ld hl, RepelWoreOffText
 	call PrintText
+	call YesNoChoice
+	
+	ld a, [wCurrentMenuItem]
+	and a
+	jp z, .UseAnother
+	jp CloseTextDisplay
+
+.UseAnother
+	ld hl, RepelUseAnotherText
+	call PrintText
 	jp AfterDisplayingTextID
 
 RepelWoreOffText::
 	TX_FAR _RepelWoreOffText
+	db "@"
+
+RepelUseAnotherText::
+	TX_FAR _RepelUseAnotherText
 	db "@"
 
 INCLUDE "engine/menu/start_menu.asm"
