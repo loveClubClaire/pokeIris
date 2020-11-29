@@ -1289,13 +1289,26 @@ DisplayRepelWoreOffText::
 	
 	ld a, [wCurrentMenuItem]
 	and a
-	jp z, .UseAnother
-	jp CloseTextDisplay
+	jp nz, .DontUseAnother
 
-.UseAnother
-	ld hl, RepelUseAnotherText
-	call PrintText
-	jp AfterDisplayingTextID
+	ld a, REPEL
+
+	ld [wd11e], a
+
+	ld [wcf91], a
+
+	call GetItemName
+	call CopyStringToCF4B
+
+	call UseItem
+
+	;ld hl, RepelUseAnotherText
+	;call PrintText
+	;jp AfterDisplayingTextID
+
+.DontUseAnother
+	jp CloseTextDisplay
+	
 
 RepelWoreOffText::
 	TX_FAR _RepelWoreOffText
