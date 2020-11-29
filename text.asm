@@ -2458,13 +2458,12 @@ _RepelWoreOffText::
 	text "REPEL's effect"
 	line "wore off."
 	
-	para "use another"
-	line "REPEL?"
-	done
+	prompt
 
 _RepelUseAnotherText::
-	text "Another REPEL"
-	line "was used"
+	text "use another"
+	line "REPEL?"
+
 	done
 
 _PokemartBuyingGreetingText::

@@ -1282,34 +1282,47 @@ PlayerBlackedOutText::
 	TX_FAR _PlayerBlackedOutText
 	db "@"
 
-DisplayRepelWoreOffText::
+DisplayRepelWoreOffText::	
 	ld hl, RepelWoreOffText
 	call PrintText
-	call YesNoChoice
-	
+
+	ld b, MAX_REPEL					;TODO - current hardcoded to search for MAX_REPEL. Make this the last type of repel used
+	predef GetQuantityOfItemInBag 	;return value stored in b 
+
+	xor a
+	cp a,b
+	jp z, .DontUseAnother 			;If repel isn't in inventory
+
+	ld a, l 						;After GetQuantityOfItemInBag, HL stores item location in memory
+	sub a, $1E						;Do some maths to convert an absolute location to a bag index 
+	sra a 							;(we do this calculation here to prevent the value in HL being lost)
+	ld [wWhichPokemon], a 			;Which we store in wWhichPokemon for RemoveItemFromInventory
+
+	;After confirming repel is in the inventory
+	ld hl, RepelUseAnotherText
+	call PrintText
+	call YesNoChoice 				;Ask player if they want to use another repel
 	ld a, [wCurrentMenuItem]
 	and a
-	jp nz, .DontUseAnother
+	jp nz, .DontUseAnother			;If they answer no, skip all this and close the dialog
 
-	ld a, REPEL
+	xor a
+	ld [wItemQuantity], a 			;Set wItemQuantity to 0 as we're removing a single item always (for RemoveItemFromInventory)
 
-	ld [wd11e], a
+	ld hl,wNumBagItems 				;Set hl for RemoveItemFromInventory
 
-	ld [wcf91], a
+	call RemoveItemFromInventory
 
-	call GetItemName
-	call CopyStringToCF4B
-
+	ld a, MAX_REPEL					;TODO - current hardcoded to search for MAX_REPEL. Make this the last type of repel used
+	ld [wd11e], a 					;Store the item ID here for GetItemName 
+	ld [wcf91], a 					;Store the item ID here for UseItem
+	call GetItemName		
+	call CopyStringToCF4B			;Called so the correct item name is printed when item is used 
 	call UseItem
-
-	;ld hl, RepelUseAnotherText
-	;call PrintText
-	;jp AfterDisplayingTextID
 
 .DontUseAnother
 	jp CloseTextDisplay
 	
-
 RepelWoreOffText::
 	TX_FAR _RepelWoreOffText
 	db "@"
