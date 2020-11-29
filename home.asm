@@ -1286,7 +1286,8 @@ DisplayRepelWoreOffText::
 	ld hl, RepelWoreOffText
 	call PrintText
 
-	ld b, MAX_REPEL					;TODO - current hardcoded to search for MAX_REPEL. Make this the last type of repel used
+	ld a, [wLastRepelUsed]			;Get the last type of repel used
+	ld b,a
 	predef GetQuantityOfItemInBag 	;return value stored in b 
 
 	xor a
@@ -1297,9 +1298,8 @@ DisplayRepelWoreOffText::
 	sub a, $1E						;Do some maths to convert an absolute location to a bag index 
 	sra a 							;(we do this calculation here to prevent the value in HL being lost)
 	ld [wWhichPokemon], a 			;Which we store in wWhichPokemon for RemoveItemFromInventory
-
-	;After confirming repel is in the inventory
-	ld hl, RepelUseAnotherText
+				
+	ld hl, RepelUseAnotherText 		;After confirming repel is in the inventory
 	call PrintText
 	call YesNoChoice 				;Ask player if they want to use another repel
 	ld a, [wCurrentMenuItem]
@@ -1313,7 +1313,7 @@ DisplayRepelWoreOffText::
 
 	call RemoveItemFromInventory
 
-	ld a, MAX_REPEL					;TODO - current hardcoded to search for MAX_REPEL. Make this the last type of repel used
+	ld a, [wLastRepelUsed]			
 	ld [wd11e], a 					;Store the item ID here for GetItemName 
 	ld [wcf91], a 					;Store the item ID here for UseItem
 	call GetItemName		

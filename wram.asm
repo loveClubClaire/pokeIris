@@ -3081,12 +3081,9 @@ wd728:: ; d728
 
 	ds 1
 
-wBeatGymFlags:: ; d72a
-; redundant because it matches wObtainedBadges
-; used to determine whether to show name on statue and in two NPC text scripts
-;joenote - now made into unused space
+wLastRepelUsed:: ; d72a
 	ds 1
-
+	;Second byte unused 
 	ds 1
 
 wd72c:: ; d72c

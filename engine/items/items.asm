@@ -1581,6 +1581,8 @@ ItemUseRepelCommon:
 	jp nz, ItemUseNotTime
 	ld a, b
 	ld [wRepelRemainingSteps], a
+	ld a, [wcf91]
+	ld [wLastRepelUsed],a
 	jp PrintItemUseTextAndRemoveItem
 
 ; handles X Accuracy item
