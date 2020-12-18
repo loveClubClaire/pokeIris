@@ -88,7 +88,8 @@ InternalMapEntries:
 	IMAP VERMILION_HOUSE_3,         $A,$9,VermilionCityName
 	IMAP DIGLETTS_CAVE,             $3,$4,DiglettsCaveName
 	IMAP VICTORY_ROAD_3,            $0,$4,VictoryRoadName
-	IMAP SAFFRON_HOUSE_3,           $7,$5,RocketHQName
+	IMAP UNUSED_MAP_CD,             $7,$5,RocketHQName
+	IMAP SAFFRON_HOUSE_3,           $A,$5,SaffronCityName
 	IMAP SILPH_CO_8F,               $A,$5,SilphCoName
 	IMAP MANSION_4,                 $2,$F,PokemonMansionName
 	IMAP SAFARI_ZONE_REST_HOUSE_4,  $8,$C,SafariZoneName
