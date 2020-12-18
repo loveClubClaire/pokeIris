@@ -206,7 +206,7 @@ MapHeaderBanks:
 	db BANK(RocketHideoutElevator_h)
 	db $01
 	db $01
-	db $01
+	db BANK(SaffronHouse3_h)
 	db BANK(SilphCo2_h)
 	db BANK(SilphCo3_h)
 	db BANK(SilphCo4_h)

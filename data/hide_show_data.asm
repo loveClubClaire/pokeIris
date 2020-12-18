@@ -211,7 +211,7 @@ MapHSPointers:
 	dw MapHSXX
 	dw MapHSXX
 	dw MapHSXX
-	dw MapHSXX
+	dw MapHSCE
 	dw MapHSCF
 	dw MapHSD0
 	dw MapHSD1
@@ -455,6 +455,8 @@ MapHSCA:
 	db ROCKET_HIDEOUT_4,$07,Show
 	db ROCKET_HIDEOUT_4,$08,Hide
 	db ROCKET_HIDEOUT_4,$09,Hide
+MapHSCE:
+	db SAFFRON_HOUSE_3,$01,Show
 MapHSCF:
 	db SILPH_CO_2F,$01,Show
 	db SILPH_CO_2F,$02,Show
