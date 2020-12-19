@@ -1,6 +1,6 @@
-SaffronHouse3Script:
+FuchsiaHouse4Script:
 	jp EnableAutoTextBoxDrawing
 
-SaffronHouse3TextPointers:
+FuchsiaHouse4TextPointers:
 
 	jp TextScriptEnd

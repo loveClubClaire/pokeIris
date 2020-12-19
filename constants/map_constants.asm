@@ -211,7 +211,7 @@ ENDM
 	mapconst ROCKET_HIDEOUT_ELEVATOR,     4,  3 ; $CB
 	mapconst UNUSED_MAP_CC,               0,  0 ; $CC
 	mapconst UNUSED_MAP_CD,               0,  0 ; $CD
-	mapconst SAFFRON_HOUSE_3,             4,  4 ; $CE
+	mapconst FUCHSIA_HOUSE_4,             4,  4 ; $CE
 	mapconst SILPH_CO_2F,                 9, 15 ; $CF
 	mapconst SILPH_CO_3F,                 9, 15 ; $D0
 	mapconst SILPH_CO_4F,                 9, 15 ; $D1

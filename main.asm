@@ -357,7 +357,7 @@ Route16HouseBlocks:
 Route2HouseBlocks:
 SaffronHouse1Blocks:
 SaffronHouse2Blocks:
-SaffronHouse3Blocks:
+FuchsiaHouse4Blocks:
 VermilionHouse1Blocks:
 NameRaterBlocks:
 LavenderHouse1Blocks:
@@ -461,9 +461,9 @@ INCLUDE "data/mapHeaders/saffronhouse2.asm"
 INCLUDE "scripts/saffronhouse2.asm"
 INCLUDE "data/mapObjects/saffronhouse2.asm"
 
-INCLUDE "data/mapHeaders/saffronhouse3.asm"
-INCLUDE "scripts/saffronhouse3.asm"
-INCLUDE "data/mapObjects/saffronhouse3.asm"
+INCLUDE "data/mapHeaders/fuchsiahouse4.asm"
+INCLUDE "scripts/fuchsiahouse4.asm"
+INCLUDE "data/mapObjects/fuchsiahouse4.asm"
 
 INCLUDE "data/mapHeaders/diglettscaveroute2.asm"
 INCLUDE "scripts/diglettscaveroute2.asm"

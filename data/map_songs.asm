@@ -205,7 +205,7 @@ MapSongBanks:
 	db MUSIC_DUNGEON1, BANK(Music_Dungeon1) ; RocketHideoutElevator
 	db MUSIC_DUNGEON1, BANK(Music_Dungeon1)
 	db MUSIC_DUNGEON1, BANK(Music_Dungeon1)
-	db MUSIC_CITIES1, BANK(Music_Cities1)  ; SaffronHouse3
+	db MUSIC_CITIES2, BANK(Music_Cities2)  ; FuchiaHouse4
 	db MUSIC_SILPH_CO, BANK(Music_SilphCo) ; SilphCo2
 	db MUSIC_SILPH_CO, BANK(Music_SilphCo) ; SilphCo3
 	db MUSIC_SILPH_CO, BANK(Music_SilphCo) ; SilphCo4

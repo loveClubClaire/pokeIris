@@ -25,6 +25,7 @@ ViridianCityObject:
 	object SPRITE_FISHER2, 6, 23, STAY, DOWN, 6 ; person
 	object SPRITE_GAMBLER, 17, 5, WALK, 2, 7 ; person
 
+
 	; warp-to
 	warp_to 23, 25, VIRIDIAN_CITY_WIDTH ; VIRIDIAN_POKECENTER
 	warp_to 29, 19, VIRIDIAN_CITY_WIDTH ; VIRIDIAN_MART

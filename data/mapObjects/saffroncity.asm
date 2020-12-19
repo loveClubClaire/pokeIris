@@ -1,7 +1,7 @@
 SaffronCityObject:
 	db $f ; border block
 
-	db 9 ; warps
+	db 8 ; warps
 	warp 7, 5, 0, COPYCATS_HOUSE_1F
 	warp 26, 3, 0, FIGHTING_DOJO
 	warp 34, 3, 0, SAFFRON_GYM
@@ -10,7 +10,6 @@ SaffronCityObject:
 	warp 18, 21, 0, SILPH_CO_1F
 	warp 9, 29, 0, SAFFRON_POKECENTER
 	warp 29, 29, 0, SAFFRON_HOUSE_2
-	warp 21, 29, 0, SAFFRON_HOUSE_3
 
 	db 10 ; signs
 	sign 17, 5, 16 ; SaffronCityText16
@@ -50,4 +49,3 @@ SaffronCityObject:
 	warp_to 18, 21, SAFFRON_CITY_WIDTH ; SILPH_CO_1F
 	warp_to 9, 29, SAFFRON_CITY_WIDTH ; SAFFRON_POKECENTER
 	warp_to 29, 29, SAFFRON_CITY_WIDTH ; SAFFRON_HOUSE_2
-	warp_to 21, 29, SAFFRON_CITY_WIDTH ; SAFFRON_HOUSE_3
