@@ -13,7 +13,7 @@ FuchsiaHouse4Text1:
 	ld a, [wCurrentMenuItem]
 	and a
 	jp z, .forgetMove
-	ld hl, FluteNoRoomText
+	ld hl, MoveDeleterText2
 	call PrintText
 	jp TextScriptEnd
 
@@ -21,8 +21,9 @@ FuchsiaHouse4Text1:
 	
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
-	ld a, TMHM_PARTY_MENU
+	ld a, DELETE_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
+	;MoveDeleterText3
 	call DisplayPartyMenu ;DisplayPartyMenu sets c if B is pressed 
 	jp c, .cancel 	
 
@@ -158,4 +159,12 @@ FuchsiaHouse4Text1:
 
 MoveDeleterText1:
 	TX_FAR _FuchsiaHouse4Text1
+	db "@"
+
+MoveDeleterText2:
+	TX_FAR _FuchsiaHouse4Text2
+	db "@"
+
+MoveDeleterText3:
+	TX_FAR _FuchsiaHouse4Text3
 	db "@"

@@ -1592,6 +1592,11 @@ _PartyMenuSwapMonText::
 	line "where?"
 	done
 
+_PartyMenuForgetMoveText::
+	text "Which move should"
+	line "be forgotten?"
+	done
+
 _PotionText::
 	TX_RAM wcd6d
 	text ""

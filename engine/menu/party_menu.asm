@@ -36,6 +36,13 @@ RedrawPartyMenu_:
 	ld c, a
 	ld [hPartyMonIndex], a
 	ld [wWhichPartyMenuHPBar], a
+
+	;load $D174 into wUnusedD71F
+	ld a, $D1
+	ld [wUnusedD71F], a
+	ld a, $74
+	ld [wUnusedD71F + $01], a
+
 .loop
 	ld a, [de]
 	cp $FF ; reached the terminator?
@@ -80,6 +87,8 @@ RedrawPartyMenu_:
 	jr z, .teachMoveMenu
 	cp EVO_STONE_PARTY_MENU
 	jr z, .evolutionStoneMenu
+	cp DELETE_PARTY_MENU
+	jp z, .deleteMoveMenu
 	push hl
 	ld bc, 14 ; 14 columns to the right
 	add hl, bc
@@ -98,7 +107,8 @@ RedrawPartyMenu_:
 	ld [hFlags_0xFFF6], a
 	call SetPartyMenuHPBarColor ; color the HP bar (on SGB)
 	pop hl
-	jr .printLevel
+	jr .printLevel	
+
 .teachMoveMenu
 	push hl
 	predef CanLearnTM ; check if the pokemon can learn the move
@@ -120,7 +130,7 @@ RedrawPartyMenu_:
 	call PrintLevel
 	pop hl
 	pop de
-	inc de
+	inc de ;party member increment 
 	ld bc, 2 * 20
 	add hl, bc
 	pop bc
@@ -191,6 +201,7 @@ RedrawPartyMenu_:
 	ld b, SET_PAL_PARTY_MENU
 	call RunPaletteCommand
 .printMessage
+	;pop hl
 	ld hl, wd730
 	ld a, [hl]
 	push af
@@ -234,6 +245,39 @@ RedrawPartyMenu_:
 	call PrintText
 	jr .done
 
+.deleteMoveMenu
+	push hl
+	push bc
+	;Get second move of current pokémon 
+	ld a, [wUnusedD71F]
+	ld h, a
+	ld a, [wUnusedD71F + $01]
+	ld l, a
+	;Store move ID into b
+	ld b, [hl]
+	;Increment current pokémon
+	ld a, $2C
+	add a, l
+	ld l, a
+	jp nc, .noCarry
+	inc h
+	;Store current pokémon 
+	ld a, h
+	ld [wUnusedD71F], a	
+.noCarry
+	ld a, l
+	ld [wUnusedD71F + $01], a
+	;is able or not?
+	ld a, b
+	and a
+	ld de, .notAbleToLearnMoveText
+	jp z, .notAble
+	ld de, .ableToLearnMoveText
+.notAble
+	pop bc
+	pop hl
+	jp .placeMoveLearnabilityString
+
 PartyMenuItemUseMessagePointers:
 	dw AntidoteText
 	dw BurnHealText
@@ -252,6 +296,7 @@ PartyMenuMessagePointers:
 	dw PartyMenuUseTMText
 	dw PartyMenuSwapMonText
 	dw PartyMenuItemUseText
+	dw PartyMenuForgetMoveText
 
 PartyMenuNormalText:
 	TX_FAR _PartyMenuNormalText
@@ -271,6 +316,10 @@ PartyMenuUseTMText:
 
 PartyMenuSwapMonText:
 	TX_FAR _PartyMenuSwapMonText
+	db "@"
+
+PartyMenuForgetMoveText:
+	TX_FAR _PartyMenuForgetMoveText
 	db "@"
 
 PotionText:
