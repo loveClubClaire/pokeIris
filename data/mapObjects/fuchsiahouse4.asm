@@ -7,7 +7,8 @@ FuchsiaHouse4Object:
 
 	db 0 ; signs
 
-	db 0 ; objects
+	db 1 ; objects
+	object SPRITE_CABLE_CLUB_WOMAN,  2,  3, STAY, NONE, 1 ; person
 
 	; warp-to
 	warp_to 2, 7, FUCHSIA_HOUSE_4_WIDTH

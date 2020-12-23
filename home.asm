@@ -420,14 +420,14 @@ HandlePartyMenuInput::
 	res 6, [hl] ; turn on letter printing delay
 	ld a, [wMenuItemToSwap]
 	and a
-	jp nz, .swappingPokemon
+	jp nz, .swappingPokemon	
 	pop af
 	ld [hTilesetType], a
 	bit 1, b
-	jr nz, .noPokemonChosen
+	jr nz, .noPokemonChosen	
 	ld a, [wPartyCount]
 	and a
-	jr z, .noPokemonChosen
+	jr z, .noPokemonChosen	
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPokemon], a
 	ld hl, wPartySpecies
@@ -440,6 +440,7 @@ HandlePartyMenuInput::
 	call BankswitchBack
 	and a
 	ret
+
 .noPokemonChosen
 	call BankswitchBack
 	scf
@@ -3962,28 +3963,28 @@ WriteOAMBlock::
 
 HandleMenuInput::
 	xor a
-	ld [wPartyMenuAnimMonEnabled], a
+	ld [wPartyMenuAnimMonEnabled], a 
 
 HandleMenuInput_::
 	ld a, [H_DOWNARROWBLINKCNT1]
 	push af
 	ld a, [H_DOWNARROWBLINKCNT2]
-	push af ; save existing values on stack
+	push af 					 ; save existing values on stack
 	xor a
 	ld [H_DOWNARROWBLINKCNT1], a ; blinking down arrow timing value 1
 	ld a, 6
 	ld [H_DOWNARROWBLINKCNT2], a ; blinking down arrow timing value 2
 .loop1
 	xor a
-	ld [wAnimCounter], a ; counter for pokemon shaking animation
+	ld [wAnimCounter], a 		 ; counter for pokemon shaking animation
 	call PlaceMenuCursor
 	call Delay3
 .loop2
 	push hl
 	ld a, [wPartyMenuAnimMonEnabled]
-	and a ; is it a pokemon selection menu?
+	and a 						 ; is it a pokemon selection menu?
 	jr z, .getJoypadState
-	callba AnimatePartyMon ; shake mini sprite of selected pokemon
+	callba AnimatePartyMon 		 ; shake mini sprite of selected pokemon
 .getJoypadState
 	pop hl
 	call JoypadLowSensitivity
@@ -3994,7 +3995,7 @@ HandleMenuInput_::
 	coord hl, 18, 11 ; coordinates of blinking down arrow in some menus
 	call HandleDownArrowBlinkTiming ; blink down arrow (if any)
 	pop hl
-	ld a, [wMenuJoypadPollCount]
+	ld a, [wMenuJoypadPollCount] ;TODO - Check if this has a valid value when executed 
 	dec a
 	jr z, .giveUpWaiting
 	jr .loop2
@@ -4009,7 +4010,7 @@ HandleMenuInput_::
 	ret
 .keyPressed
 	xor a
-	ld [wCheckFor180DegreeTurn], a
+	ld [wCheckFor180DegreeTurn], a ;TODO - figure out what this is for 
 	ld a, [hJoy5]
 	ld b, a
 	bit 6, a ; pressed Up key?
@@ -4062,7 +4063,7 @@ HandleMenuInput_::
 	pop hl
 	jr nz, .skipPlayingSound
 	ld a, SFX_PRESS_AB
-	call PlaySound
+	call PlaySound	
 .skipPlayingSound
 	pop af
 	ld [H_DOWNARROWBLINKCNT2], a
