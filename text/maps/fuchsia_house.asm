@@ -25,3 +25,22 @@ _FuchsiaHouse1Text3::
 
 	para "Did he show you?"
 	done
+
+_FuchsiaHouse4Text1::
+	text "WARDEN: Hif fuff"
+	line "hefifoo!"
+
+	para "Ha lof ha feef ee"
+	line "hafahi ho. Heff"
+	cont "hee fwee!"
+	done
+
+_FuchsiaHouse4Text2::
+	text "Ah howhee ho hoo!"
+	line "Eef ee hafahi ho!"
+	done
+
+_FuchsiaHouse4Text1::
+	text "Ha? He ohay heh"
+	line "ha hoo ee haheh!"
+	done

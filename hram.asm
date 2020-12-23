@@ -177,7 +177,7 @@ hWY  EQU $FFB0
 
 ;ZachNote - I think each bit is assoicated with a button on the gameboy 
   ;1 is pressed - 0 is not pressed 
-  ;bit 6 - up
+  ;bit 1 - A, 2 - b,  6 - up
 hJoyLast     EQU $FFB1
 hJoyReleased EQU $FFB2
 hJoyPressed  EQU $FFB3

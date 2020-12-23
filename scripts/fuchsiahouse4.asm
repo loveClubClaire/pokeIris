@@ -7,7 +7,7 @@ FuchsiaHouse4TextPointers:
 FuchsiaHouse4Text1:
 	TX_ASM
 	call SaveScreenTilesToBuffer2
-	ld hl, MrFujiAfterFluteText
+	ld hl, MoveDeleterText1
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
@@ -154,3 +154,8 @@ FuchsiaHouse4Text1:
 	call PrintText
 
 	jp TextScriptEnd
+
+
+MoveDeleterText1:
+	TX_FAR _FuchsiaHouse4Text1
+	db "@"
