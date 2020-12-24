@@ -23,7 +23,6 @@ FuchsiaHouse4Text1:
 	ld [wUpdateSpritesEnabled], a
 	ld a, DELETE_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
-	;MoveDeleterText3
 	call DisplayPartyMenu ;DisplayPartyMenu sets c if B is pressed 
 	jp c, .cancel 	
 
@@ -57,7 +56,7 @@ FuchsiaHouse4Text1:
 	callab FormatMovesString
 
 .loop
-	ld hl, WhichMoveToForgetText ;Do we need to do a bank switch to access this text? How? lol
+	ld hl, MoveDeleterText3 
 	call PrintText
 	coord hl, 4, 7 
 	ld b, 4
@@ -102,18 +101,56 @@ FuchsiaHouse4Text1:
 	jp z, .confirm  	
 	jp .forgetMove       ;Loops to displaying pokemon window again
 
+.confirm 				 ;Copies selected move name from wMovesString to wTempMoveNameBuffer
+	ld b, 0
+	ld c, 0
+	ld hl, wCurrentMenuItem
+	inc [hl]
+	ld hl, wMovesString
+.nameLoop
+	ld a, b
+	push hl
+	ld hl, wCurrentMenuItem
+	xor a, [hl]
+	pop hl 
+	jr z, .copy
+	ld d, h
+	ld e, l 
+	ld c, 0 
+.charLoop
+	ld a, [hli]
+	inc c
+	xor a, $4e 			;$4e is the line break char, used here to delineate between different moves 
+	jr nz, .charLoop
+	inc b
+	jr .nameLoop
+.copy
+	dec hl 
+	ld [hl], "@"        ;"@" character temporarally replaces $4e 
+	push hl 			;so copied data has a terminator and doesn't print garbage
+	
+	ld b, 0
+	ld h, d 
+	ld l, e 
+	ld de, wTempMoveNameBuffer
+	call CopyData
 
-.confirm
-	ld hl, MrFujiAfterFluteText
+	pop hl
+	ld [hl], $4e
+
+
+
+	ld hl, MoveDeleterText4
 	call PrintText
 	call YesNoChoice
+
+;.DebugLoop2
+;	jr .DebugLoop2
+
 	ld a, [wCurrentMenuItem]
 	and a
 	jp z, .cancel
 	jp .forgetMove
-
-.DebugLoop2
-	jr .DebugLoop2
 
 
 	pop af
@@ -151,7 +188,7 @@ FuchsiaHouse4Text1:
 	call RestoreScreenTilesAndReloadTilePatterns
 	call LoadGBPal
 
-	ld hl, MrFujiAfterFluteText
+	ld hl, MoveDeleterText6
 	call PrintText
 
 	jp TextScriptEnd
@@ -168,3 +205,16 @@ MoveDeleterText2:
 MoveDeleterText3:
 	TX_FAR _FuchsiaHouse4Text3
 	db "@"
+
+MoveDeleterText4:
+	TX_FAR _FuchsiaHouse4Text4
+	db "@"
+
+MoveDeleterText5:
+	TX_FAR _FuchsiaHouse4Text5
+	db "@"
+
+MoveDeleterText6:
+	TX_FAR _FuchsiaHouse4Text6
+	db "@"
+

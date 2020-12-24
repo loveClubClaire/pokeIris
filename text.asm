@@ -1593,8 +1593,8 @@ _PartyMenuSwapMonText::
 	done
 
 _PartyMenuForgetMoveText::
-	text "Which move should"
-	line "be forgotten?"
+	text "Which #MON"
+	line "should forget?"
 	done
 
 _PotionText::

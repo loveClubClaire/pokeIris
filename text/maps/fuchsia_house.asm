@@ -46,6 +46,23 @@ _FuchsiaHouse4Text2::
 	done
 
 _FuchsiaHouse4Text3::
-	text "Which #MON should"
-	line "forget a move?"
+	text "Which move should"
+	line "be forgotten?"
+	done
+
+_FuchsiaHouse4Text4::
+	text "Oh, make it forget"
+	line "@"
+	TX_RAM wTempMoveNameBuffer
+	text "?"
+	done
+
+_FuchsiaHouse4Text5::
+	text "Done! Your #MON"
+	line "forgot the move."
+	done
+
+_FuchsiaHouse4Text6::
+	text "No? Come visit"
+	line "me again."
 	done
