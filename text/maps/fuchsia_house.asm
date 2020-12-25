@@ -66,3 +66,16 @@ _FuchsiaHouse4Text6::
 	text "No? Come visit"
 	line "me again."
 	done
+
+_FuchsiaHouse4Text7::
+	text "That #MON only"
+	line "knows one move!"
+	prompt
+	done
+
+_FuchsiaHouse4Text8::
+	text "Done! Your #MON"
+	line "forgot @"
+	TX_RAM wTempMoveNameBuffer
+	text ""
+	done
