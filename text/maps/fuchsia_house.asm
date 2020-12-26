@@ -26,7 +26,6 @@ _FuchsiaHouse1Text3::
 	para "Did he show you?"
 	done
 
-
 _FuchsiaHouse4Text1::
 	text "Umm..."
 	line "Oh, yes, I'm the"
