@@ -83,7 +83,7 @@ ItemNames:
 	db "ELIXER@"
 	db "MAX ELIXER@"
 	db "LANTERN@"
-	db "B1F@"
+	db "TM CASE@"
 	db "1F@"
 	db "2F@"
 	db "3F@"
@@ -97,3 +97,4 @@ ItemNames:
 	db "11F@"
 	db "B4F@"
 	db "B2F@"
+	db "B1F@"

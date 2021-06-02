@@ -100,6 +100,7 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; ELIXER
 	dw ItemUsePPRestore  ; MAX_ELIXER
 	dw ItemUseLANTERN	 ; LANTERN
+	dw ItemUseTMCASE     ; TMCASE
 
 ItemUseBall:
 
@@ -2260,6 +2261,9 @@ ItemUseLANTERN:
 .lanternLightsAreaText
 	TX_FAR _LanternLightsAreaText
 	db "@"
+
+ItemUseTMCASE:
+	jp ItemUseNotTime
 
 ; for items that can't be used from the Item menu
 UnusableItem:
