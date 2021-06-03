@@ -2263,7 +2263,25 @@ ItemUseLANTERN:
 	db "@"
 
 ItemUseTMCASE:
-	jp ItemUseNotTime
+	ld [wUnusedD726], a
+	
+;Code from StartMenu_Item in start_sub_menus.asm
+	ld bc, wNumBagItems
+	ld hl, wListPointer
+	ld a, c
+	ld [hli], a
+	ld [hl], b ; store item bag pointer in wListPointer (for DisplayListMenuID)
+	xor a
+	ld [wPrintItemPrices], a
+	ld a, TMCASEMENU
+	ld [wListMenuID], a
+	ld a, [wBagSavedMenuItem]
+	ld [wCurrentMenuItem], a
+	call DisplayListMenuID	
+
+
+
+
 
 ; for items that can't be used from the Item menu
 UnusableItem:

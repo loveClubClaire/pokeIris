@@ -1443,8 +1443,18 @@ DisplayListMenuID::
 	ld h, a ; hl = address of the list
 	ld a, [hl] ; the first byte is the number of entries in the list
 	ld [wListCount], a
+;***
+	ld a, [wListMenuID]
+	cp TMCASEMENU
+	jr nz, .menuBox
+	ld a, TM_CASE_MENU
+	ld [wTextBoxID], a
+	jr .displayTextBox
+;***
+.menuBox
 	ld a, LIST_MENU_BOX
 	ld [wTextBoxID], a
+.displayTextBox
 	call DisplayTextBoxID ; draw the menu text box
 	call UpdateSprites ; disable sprites behind the text box
 ; the code up to .skipMovingSprites appears to be useless
@@ -1465,14 +1475,27 @@ DisplayListMenuID::
 	ld [wMaxMenuItem], a
 	ld a, 4
 	ld [wTopMenuItemY], a
+;***
+	ld a, [wListMenuID]
+	cp TMCASEMENU
+	jr nz, .setStandardValues
+.setTMCaseValues
+	ld a, 1
+	ld [wTopMenuItemX], a
+	ld a, A_BUTTON | B_BUTTON 
+	ld [wMenuWatchedKeys], a
+	jr .delayFrames
+;***
+.setStandardValues
 	ld a, 5
 	ld [wTopMenuItemX], a
 	ld a, A_BUTTON | B_BUTTON | SELECT
 	ld [wMenuWatchedKeys], a
+.delayFrames
 	ld c, 10
 	call DelayFrames
 
-DisplayListMenuIDLoop::	
+DisplayListMenuIDLoop::
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a ; disable transfer
 	call PrintListMenuEntries
@@ -1496,8 +1519,8 @@ DisplayListMenuIDLoop::
 	ld [wMenuCursorLocation + 1], a
 	jr .buttonAPressed
 .notOldManBattle
-	call LoadGBPal
-	call HandleMenuInput
+	call LoadGBPal       
+	call HandleMenuInput 
 	push af
 	call PlaceMenuCursor
 	pop af
@@ -1763,11 +1786,14 @@ PrintListMenuEntries::
 	ld a, [wListScrollOffset]
 	ld c, a
 	ld a, [wListMenuID]
+	cp TMCASEMENU ;!!!
+	jr z, .mult ;!!!
 	cp ITEMLISTMENU
 	ld a, c
 	jr nz, .skipMultiplying
 ; if it's an item menu
 ; item entries are 2 bytes long, so multiply by 2
+.mult ;!!!
 	sla a
 	sla c
 .skipMultiplying
@@ -1778,6 +1804,12 @@ PrintListMenuEntries::
 .noCarry
 	coord hl, 6, 4 ; coordinates of first list entry name
 	ld b, 4 ; print 4 names
+;***
+	ld a, [wListMenuID] 
+	cp TMCASEMENU
+	jr nz, .loop
+	coord hl, 2,4
+;***
 .loop
 	ld a, b
 	ld [wWhichPokemon], a
@@ -1931,6 +1963,13 @@ PrintListMenuEntries::
 	dec b
 	jp nz, .loop
 	ld bc, -8
+;***
+	ld a, [wListMenuID]
+	cp TMCASEMENU
+	jr nz, .noDivision
+	sra c
+;***
+.noDivision
 	add hl, bc
 	ld a, "▼"
 	ld [hl], a
