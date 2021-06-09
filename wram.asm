@@ -2715,6 +2715,11 @@ wBoxItems:: ; d53b
 	ds PC_ITEM_CAPACITY * 2
 	ds 1 ; end
 
+wTMCaseItems:: ;d598
+	ds 7
+wNumTMCaseItems:: ; d59F
+	ds 1
+
 wCurrentBoxNum:: ; d5a0
 ; bits 0-6: box number
 ; bit 7: whether the player has changed boxes before
