@@ -1437,21 +1437,23 @@ DisplayListMenuID::
 	xor a
 	ld [wMenuItemToSwap], a ; 0 means no item is currently being swapped
 	ld [wListCount], a
+;***
+	ld a, [wListMenuID]
+	cp TMCASEMENU
+	jr nz, .notTMCase
+	ld a, TM_CASE_MENU
+	ld [wTextBoxID], a
+	ld a, [wNumTMCaseItems]
+	ld [wListCount], a
+	jr .displayTextBox
+;***
+.notTMCase
 	ld a, [wListPointer]
 	ld l, a
 	ld a, [wListPointer + 1]
 	ld h, a ; hl = address of the list
 	ld a, [hl] ; the first byte is the number of entries in the list
 	ld [wListCount], a
-;***
-	ld a, [wListMenuID]
-	cp TMCASEMENU
-	jr nz, .menuBox
-	ld a, TM_CASE_MENU
-	ld [wTextBoxID], a
-	jr .displayTextBox
-;***
-.menuBox
 	ld a, LIST_MENU_BOX
 	ld [wTextBoxID], a
 .displayTextBox
@@ -1484,6 +1486,7 @@ DisplayListMenuID::
 	ld [wTopMenuItemX], a
 	ld a, A_BUTTON | B_BUTTON 
 	ld [wMenuWatchedKeys], a
+	ld hl, wNumTMCaseItems
 	jr .delayFrames
 ;***
 .setStandardValues
@@ -1551,6 +1554,8 @@ DisplayListMenuIDLoop::
 	ld a, c
 	ld [wWhichPokemon], a
 	ld a, [wListMenuID]
+	cp TMCASEMENU
+	jr z, .getTMCaseSelection
 	cp ITEMLISTMENU
 	jr nz, .skipMultiplying
 ; if it's an item menu
@@ -1562,8 +1567,55 @@ DisplayListMenuIDLoop::
 	ld h, a
 	inc hl ; hl = beginning of list entries
 	ld b, 0
-	add hl, bc
-	ld a, [hl]
+	add hl, bc ;hl is the start and bc is the offset
+	ld a, [hl] ;store into a the item we're accessing
+	jr .gotSelection
+
+.getTMCaseSelection
+	;(I need to populate wListCount somewhere
+	;Load the item ID into a 
+	;bc is the item offset of the list
+	ld e, c 			 ;store index into e 
+	push hl
+	push bc
+	inc e 				 ;e stores index of item we're searching for & is inc to avoid an off by 1 error
+	xor a 
+	ld b, a 			 ;set # of 1's encountered to 0 
+	ld hl, wTMCaseItems 
+	dec l 				 ;decrement address l as Loop A always increments it 
+.TMCaseLoopA2
+	xor a 
+	ld c, a 			 ;set bit being analyzed in current byte to 0 
+	inc l 				 ;increment current byte 
+	ld d, [hl]			
+	ld a, $9F 			
+	xor a,l 			 ;Check if we've searched all the TMCase Bytes 
+	jr nz, .TMCaseLoopB2
+	ld a, $FF 			 ;if so, set a to $FF so a "cancel" label is printed 
+	jr .TMCasePop2 
+.TMCaseLoopB2
+	bit 3, c 			 ;Check if we've checked all bits in this byte  
+	jr nz, .TMCaseLoopA2 ;If so, check next byte 
+	sla d 				 ;Do a shift so we can check the next bit in the byte 
+	inc c 				 ;Increment current bit in byte 
+	jr nc, .TMCaseLoopB2 ;If checked bit was a zero, check the next bit 
+	inc b 				
+	ld a, b 
+	xor a,e 			 ;e stores list position of current item 
+	jr nz, .TMCaseLoopB2 
+	ld a, l  			 ;Once we've found the correct bit, calculate the hex value of the item 
+	sub a, $98 			 ;Store in a which byte we're in 
+	sla a
+	sla a
+	sla a 				 ;Multiply the byte by 8 to get the number of bits 
+	add a, c 			 ;Add the current bit position 
+	add a, $C4 			 ;Add TM constant 
+	dec a 				 ;Subtract 1 to adjust for counting up bits from 1-8 rather than 0-7
+.TMCasePop2
+	dec e
+	pop bc 
+	pop hl 
+.gotSelection
 	ld [wcf91], a
 	ld a, [wListMenuID]
 	and a ; is it a PC pokemon list?
@@ -1608,6 +1660,7 @@ DisplayListMenuIDLoop::
 	res 6, [hl] ; turn on letter printing delay
 	jp BankswitchBack
 .checkOtherKeys ; check B, SELECT, Up, and Down keys
+	ld [wUnusedD726], a
 	bit 1, a ; was the B button pressed?
 	jp nz, ExitListMenu ; if so, exit the menu
 	bit 2, a ; was the select button pressed?
@@ -1778,6 +1831,24 @@ PrintListMenuEntries::
 	ld b, 9
 	ld c, 14
 	call ClearScreenArea
+;Implement shift algorithm 
+;de is exepcted to point to the current item selected
+		;it stores the current item were on
+		;Current item can be added to constant to get item ID 
+	;Set coordinate to accomidate for changed menu size
+	;Jump to loop
+;***
+	ld a, [wListMenuID] 
+	cp TMCASEMENU
+	jr nz, .standardList
+	xor a 
+	ld e, a
+	ld b, 4 ; print 4 names
+	coord hl, 2,4
+	jr .loop
+;***
+
+.standardList
 	ld a, [wListPointer]
 	ld e, a
 	ld a, [wListPointer + 1]
@@ -1786,14 +1857,11 @@ PrintListMenuEntries::
 	ld a, [wListScrollOffset]
 	ld c, a
 	ld a, [wListMenuID]
-	cp TMCASEMENU ;!!!
-	jr z, .mult ;!!!
 	cp ITEMLISTMENU
 	ld a, c
 	jr nz, .skipMultiplying
 ; if it's an item menu
 ; item entries are 2 bytes long, so multiply by 2
-.mult ;!!!
 	sla a
 	sla c
 .skipMultiplying
@@ -1804,18 +1872,63 @@ PrintListMenuEntries::
 .noCarry
 	coord hl, 6, 4 ; coordinates of first list entry name
 	ld b, 4 ; print 4 names
-;***
-	ld a, [wListMenuID] 
-	cp TMCASEMENU
-	jr nz, .loop
-	coord hl, 2,4
-;***
 .loop
 	ld a, b
 	ld [wWhichPokemon], a
+;***
+	ld a, [wListMenuID] 
+	cp TMCASEMENU
+	jr z, .TMCaseGetItem
+;***
 	ld a, [de]
-	ld [wd11e], a
-	cp $ff
+	jr .loopContinue
+;***
+.TMCaseGetItem
+	push hl
+	push bc
+	inc e 				;e stores index of item we're searching for & is inc to avoid an off by 1 error
+	xor a 
+	ld b, a 			;set # of 1's encountered to 0 
+	ld hl, wTMCaseItems 
+	dec l 				;decrement address l as Loop A always increments it 
+.TMCaseLoopA
+	xor a 
+	ld c, a 			;set bit being analyzed in current byte to 0 
+	inc l 				;increment current byte 
+	ld d, [hl]			
+	ld a, $9F 			
+	xor a,l 			;Check if we've searched all the TMCase Bytes 
+	jr nz, .TMCaseLoopB 
+	ld a, $FF 			;if so, set a to $FF so a "cancel" label is printed 
+	jr .TMCasePop 
+.TMCaseLoopB
+	bit 3, c 			;Check if we've checked all bits in this byte  
+	jr nz, .TMCaseLoopA ;If so, check next byte 
+	sla d 				;Do a shift so we can check the next bit in the byte 
+	inc c 				;Increment current bit in byte 
+	jr nc, .TMCaseLoopB ;If checked bit was a zero, check the next bit 
+	inc b 				
+	ld a, b 
+	xor a,e 			;e stores list position of current item 
+	jr nz, .TMCaseLoopB 
+	ld a, l  			;Once we've found the correct bit, calculate the hex value of the item 
+	sub a, $98 			;Store in a which byte we're in 
+	sla a
+	sla a
+	sla a 				;Multiply the byte by 8 to get the number of bits 
+	add a, c 			;Add the current bit position 
+	add a, $C4 			;Add TM constant 
+	dec a 				;Subtract 1 to adjust for counting up bits from 1-8 rather than 0-7
+.TMCasePop
+	dec e
+	pop bc 
+	pop hl 
+
+;***
+.loopContinue
+	 		;Get current item and store it into a ;TODO, add offset and get item
+	ld [wd11e], a   ;Store item into wd11e
+	cp $ff 			;Check if current item is $FF, the shorthand for cancel. 
 	jp z, .printCancelMenuItem
 	push bc
 	push de
@@ -1826,8 +1939,8 @@ PrintListMenuEntries::
 	and a
 	jr z, .pokemonPCMenu
 	cp MOVESLISTMENU
-	jr z, .movesMenu
-.itemMenu
+	jr z, .movesMenu 
+.itemMenu 			;Let TM case Fall through to itemMenu
 	call GetItemName
 	jr .placeNameString
 .pokemonPCMenu
@@ -1911,7 +2024,7 @@ PrintListMenuEntries::
 .skipPrintingPokemonLevel
 	pop hl
 	pop de
-	inc de
+	inc de   ;This increments the counter 
 	ld a, [wListMenuID]
 	cp ITEMLISTMENU
 	jr nz, .nextListEntry
@@ -1963,8 +2076,8 @@ PrintListMenuEntries::
 	dec b
 	jp nz, .loop
 	ld bc, -8
-;***
-	ld a, [wListMenuID]
+;*** this changes the position of the ▼ displayed for TM Case
+	ld a, [wListMenuID] 
 	cp TMCASEMENU
 	jr nz, .noDivision
 	sra c
