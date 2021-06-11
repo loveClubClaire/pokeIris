@@ -2263,7 +2263,7 @@ ItemUseLANTERN:
 	db "@"
 
 ItemUseTMCASE:
-	ld [wUnusedD726], a
+	
 	
 ;Code from StartMenu_Item in start_sub_menus.asm
 	ld bc, wNumBagItems
@@ -2275,9 +2275,24 @@ ItemUseTMCASE:
 	ld [wPrintItemPrices], a
 	ld a, TMCASEMENU
 	ld [wListMenuID], a
-	ld a, [wBagSavedMenuItem]
+
+
+	ld a, [wBagSavedMenuItem] ;Save this into wCurrent?
 	ld [wCurrentMenuItem], a
+
+
+	ld a, [wListScrollOffset]
+	ld [wSavedListScrollOffset], a
+	xor a
+	ld [wListScrollOffset], a
+	ld [wCurrentMenuItem], a
+
+	;ld [wUnusedD726], a
 	call DisplayListMenuID	
+
+	
+	ld a, [wSavedListScrollOffset]
+	ld [wListScrollOffset], a
 
 
 

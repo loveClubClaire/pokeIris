@@ -1660,7 +1660,6 @@ DisplayListMenuIDLoop::
 	res 6, [hl] ; turn on letter printing delay
 	jp BankswitchBack
 .checkOtherKeys ; check B, SELECT, Up, and Down keys
-	ld [wUnusedD726], a
 	bit 1, a ; was the B button pressed?
 	jp nz, ExitListMenu ; if so, exit the menu
 	bit 2, a ; was the select button pressed?
@@ -1827,10 +1826,6 @@ ExitListMenu::
 	ret
 
 PrintListMenuEntries::
-	coord hl, 5, 3
-	ld b, 9
-	ld c, 14
-	call ClearScreenArea
 ;Implement shift algorithm 
 ;de is exepcted to point to the current item selected
 		;it stores the current item were on
@@ -1841,7 +1836,14 @@ PrintListMenuEntries::
 	ld a, [wListMenuID] 
 	cp TMCASEMENU
 	jr nz, .standardList
+	coord hl, 1, 3
+	ld b, 9
+	ld c, 14
+	call ClearScreenArea
 	xor a 
+	ld e, a
+	ld a, [wListScrollOffset]
+	add e
 	ld e, a
 	ld b, 4 ; print 4 names
 	coord hl, 2,4
@@ -1849,6 +1851,10 @@ PrintListMenuEntries::
 ;***
 
 .standardList
+	coord hl, 5, 3
+	ld b, 9
+	ld c, 14
+	call ClearScreenArea
 	ld a, [wListPointer]
 	ld e, a
 	ld a, [wListPointer + 1]
@@ -1926,7 +1932,6 @@ PrintListMenuEntries::
 
 ;***
 .loopContinue
-	 		;Get current item and store it into a ;TODO, add offset and get item
 	ld [wd11e], a   ;Store item into wd11e
 	cp $ff 			;Check if current item is $FF, the shorthand for cancel. 
 	jp z, .printCancelMenuItem
