@@ -1838,7 +1838,7 @@ PrintListMenuEntries::
 	jr nz, .standardList
 	coord hl, 1, 3
 	ld b, 9
-	ld c, 14
+	ld c, 18
 	call ClearScreenArea
 	xor a 
 	ld e, a
@@ -1943,10 +1943,52 @@ PrintListMenuEntries::
 	ld a, [wListMenuID]
 	and a
 	jr z, .pokemonPCMenu
+	cp TMCASEMENU
+	jr z, .tmCaseMenu
 	cp MOVESLISTMENU
 	jr z, .movesMenu 
 .itemMenu 			;Let TM case Fall through to itemMenu
 	call GetItemName
+	jr .placeNameString
+.tmCaseMenu
+	;convert item id (which will always be a TM/HM) to the corresponding move id 
+	ld a, [wd11e]
+	push af ;Store the original item id 
+	sub TM_01
+	jr nc, .skipAdding
+	add 55 ; if item is an HM, add 55
+.skipAdding
+	inc a
+	ld [wd11e], a
+	push hl  	
+	predef TMToMove ; get move ID from TM/HM ID
+	pop hl 
+	ld a, [wd11e]
+	call GetMoveName
+	pop af
+	ld [wd11e], a
+	;shift code, shifts the result of GetMoveName up 5 bytes in the buffer 
+	;We do 5 bytes because the TMxx is always 4 characters and one char for a space 
+	push de 
+	push hl
+	ld a, e
+	add $C 
+	ld e, a 
+	add $5
+	ld l, a 
+	ld h, d 
+.NameShiftLoop
+	ld a, [de]
+	ld [hl], a 
+	dec e 
+	dec l 
+	ld a, e 
+	cp $6C
+	jp nz, .NameShiftLoop
+	call GetItemName ;Get the name of the item (ex: TM01) and write it to the buffer 
+	ld [hl], " "
+	pop hl 
+	pop de 
 	jr .placeNameString
 .pokemonPCMenu
 	push hl
