@@ -2263,37 +2263,32 @@ ItemUseLANTERN:
 	db "@"
 
 ItemUseTMCASE:
-	
-	
-;Code from StartMenu_Item in start_sub_menus.asm
-	ld bc, wNumBagItems
-	ld hl, wListPointer
-	ld a, c
-	ld [hli], a
-	ld [hl], b ; store item bag pointer in wListPointer (for DisplayListMenuID)
-	xor a
-	ld [wPrintItemPrices], a
 	ld a, TMCASEMENU
 	ld [wListMenuID], a
-
-
-	ld a, [wBagSavedMenuItem] ;Save this into wCurrent?
-	ld [wCurrentMenuItem], a
-
-
 	ld a, [wListScrollOffset]
 	ld [wSavedListScrollOffset], a
 	xor a
 	ld [wListScrollOffset], a
 	ld [wCurrentMenuItem], a
-
-	;ld [wUnusedD726], a
 	call DisplayListMenuID	
-
-	
 	ld a, [wSavedListScrollOffset]
 	ld [wListScrollOffset], a
-
+	ld a, [wMenuExitMethod]
+	cp $02
+	jp z, .partyMenuNotDisplayed
+	;Using Item
+	call UseItem_
+	
+	ld a, [wActionResultOrTookBattleTurn]
+	cp $02
+	jp z, .partyMenuNotDisplayed
+	call GBPalWhiteOutWithDelay3
+	call RestoreScreenTilesAndReloadTilePatterns
+.partyMenuNotDisplayed
+	;call LoadScreenTilesFromBuffer2 ; restore saved screen
+	;call LoadTextBoxTilePatterns
+	;call UpdateSprites
+	ret
 
 
 

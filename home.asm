@@ -1572,9 +1572,7 @@ DisplayListMenuIDLoop::
 	jr .gotSelection
 
 .getTMCaseSelection
-	;(I need to populate wListCount somewhere
-	;Load the item ID into a 
-	;bc is the item offset of the list
+	;Load the item ID into a, bc is the item offset of the list
 	ld e, c 			 ;store index into e 
 	push hl
 	push bc
@@ -1660,6 +1658,7 @@ DisplayListMenuIDLoop::
 	res 6, [hl] ; turn on letter printing delay
 	jp BankswitchBack
 .checkOtherKeys ; check B, SELECT, Up, and Down keys
+	ld [wUnusedD726], a
 	bit 1, a ; was the B button pressed?
 	jp nz, ExitListMenu ; if so, exit the menu
 	bit 2, a ; was the select button pressed?
