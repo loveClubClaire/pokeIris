@@ -5,6 +5,9 @@
 ; [wItemQuantity] = item quantity
 ; sets carry flag if successful, unsets carry flag if unsuccessful
 AddItemToInventory_:
+	ld a, [wcf91]
+	cp HM_01 ; is this a TM/HM?
+	jr nc, .addMachine
 	ld a, [wItemQuantity] ; a = item quantity
 	push af
 	push bc
@@ -90,6 +93,46 @@ AddItemToInventory_:
 	pop bc
 	ld a, b
 	ld [wItemQuantity], a ; restore the initial value from when the function was called
+	ret
+.addMachine
+	sub $BC ; ($C4 - $8 = $BC)
+	push bc 
+	push hl
+	ld c, $FF
+	ld b, $08
+.getByteOffsetLoop
+	inc c 
+	sub b
+	cp b
+	jr nc, .getByteOffsetLoop 
+	;a is bit to set ;c is byte offset 
+	ld b, $00 ;I'm preserving the value of a here  
+	ld hl, wTMCaseItems
+	add hl, bc 
+	;Don't do a bit shift if bit to set is zero 
+	cp b
+	jr z, .skipBitShift
+	ld b, $80 ;inc b ;set b to 1 
+.getBitPositionLoop 
+	sra b
+	dec a 
+	jr nz, .getBitPositionLoop
+	jr .addToTMCase
+.skipBitShift
+	inc b 
+.addToTMCase
+	ld a, [hl]
+	ld c, a 
+	or b 
+	ld [hl], a 
+	xor c 
+	jr z, .skipTMCountIncrement
+	ld hl, wNumTMCaseItems
+	inc [hl] 
+.skipTMCountIncrement 
+	pop hl
+	pop bc 
+	scf
 	ret
 
 ; function to remove an item (in varying quantities) from the player's bag or PC box

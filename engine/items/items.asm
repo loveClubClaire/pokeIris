@@ -2278,20 +2278,13 @@ ItemUseTMCASE:
 	jp z, .partyMenuNotDisplayed
 	;Using Item
 	call UseItem_
-	
 	ld a, [wActionResultOrTookBattleTurn]
 	cp $02
 	jp z, .partyMenuNotDisplayed
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
 .partyMenuNotDisplayed
-	;call LoadScreenTilesFromBuffer2 ; restore saved screen
-	;call LoadTextBoxTilePatterns
-	;call UpdateSprites
 	ret
-
-
-
 
 ; for items that can't be used from the Item menu
 UnusableItem:
