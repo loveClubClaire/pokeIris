@@ -66,13 +66,21 @@ MomHealText2:
 	TX_FAR _MomHealText2
 	db "@"
 
-RedsHouse1FText2: ; TV
+RedsHouse1FText2: ; Mr. Mime
+	TX_FAR _MrMimeText
+	db "@"
+
+RedsHouse1FText3: ; TV
 	TX_ASM
 	ld a, [wSpriteStateData1 + 9]
 	cp SPRITE_FACING_UP
 	ld hl, TVWrongSideText
 	jr nz, .notUp
 	ld hl, StandByMeText
+	ld a, [wPlayerGender]
+	cp $01
+	jr nz, .notUp
+	ld hl, WizardOfOzText
 .notUp
 	call PrintText
 	jp TextScriptEnd
@@ -85,7 +93,8 @@ TVWrongSideText:
 	TX_FAR _TVWrongSideText
 	db "@"
 
-RedsHouse1FText3: ; Mr. Mime
-	TX_FAR _MrMimeText
+WizardOfOzText:
+	TX_FAR _WizardOfOzText
 	db "@"
+
 

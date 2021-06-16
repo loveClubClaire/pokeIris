@@ -95,7 +95,6 @@ AddItemToInventory_:
 	ld [wItemQuantity], a ; restore the initial value from when the function was called
 	ret
 .addMachine
-	ld [wUnusedD726], a
 	sub $BC ; ($C4 - $8 = $BC)
 	push bc
 	push hl

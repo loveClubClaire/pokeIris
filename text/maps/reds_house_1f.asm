@@ -40,6 +40,15 @@ _StandByMeText::
 	para "I better go too."
 	done
 
+_WizardOfOzText::
+	text "A girl with her"
+	line "hair in pigtails"
+	cont "is walking up a"
+	cont "brick road."
+
+	para "I better go too."
+	done
+
 _TVWrongSideText::
 	text "Oops, wrong side."
 	done
