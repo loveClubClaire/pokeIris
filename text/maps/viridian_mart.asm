@@ -21,17 +21,13 @@ ViridianMartParcelQuestText::
 	done
 
 ViridianMartGetTMCase::
-
 	text "You're a trainer"
 	line "right? Here's"
 	cont "something for"
 	cont "helping me out."
 
-;A case that holds TMs and HMs.
-
 	para "<PLAYER> got"
 	line "TM CASE!@@"
-
 
 _ViridianMartText2::
 	text "This shop sells"

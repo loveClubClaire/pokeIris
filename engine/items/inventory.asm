@@ -95,6 +95,7 @@ AddItemToInventory_:
 	ld [wItemQuantity], a ; restore the initial value from when the function was called
 	ret
 .addMachine
+	ld [wUnusedD726], a
 	sub $BC ; ($C4 - $8 = $BC)
 	push bc
 	push hl
@@ -114,7 +115,7 @@ AddItemToInventory_:
 	jr z, .skipBitShift
 	ld b, $80 ;inc b ;set b to 1
 .getBitPositionLoop 
-	sra b
+	srl b
 	dec a
 	jr nz, .getBitPositionLoop
 	jr .addToTMCase
