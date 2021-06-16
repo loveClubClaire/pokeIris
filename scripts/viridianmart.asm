@@ -7,12 +7,12 @@ ViridianMartScript:
 
 ViridianMartScript_1d47d:
 	CheckEvent EVENT_OAK_GOT_PARCEL
-	jr nz, .asm_1d489
+	jr nz, .delivered_parcel
 	ld hl, ViridianMartTextPointers
-	jr .asm_1d48c
-.asm_1d489
-	ld hl, ViridianMartTextPointers + $a ; starts at ViridianMartText6
-.asm_1d48c
+	jr .done
+.delivered_parcel
+	ld hl, ViridianMartTextPointers2
+.done
 	ld a, l
 	ld [wMapTextPtr], a
 	ld a, h
@@ -54,6 +54,11 @@ ViridianMartScript1:
 	call DisplayTextID
 	lb bc, OAKS_PARCEL, 1
 	call GiveItem
+	ld a, $6
+	ld [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	lb bc, TMCASE, 1
+	call GiveItem
 	SetEvent EVENT_GOT_OAKS_PARCEL
 	ld a, $2
 	ld [wViridianMarketCurScript], a
@@ -67,6 +72,9 @@ ViridianMartTextPointers:
 	dw ViridianMartText3
 	dw ViridianMartText4
 	dw ViridianMartText5
+	dw ViridianMartText6
+
+ViridianMartTextPointers2:
 	dw ViridianCashierText
 	dw ViridianMartText2
 	dw ViridianMartText3
@@ -81,6 +89,11 @@ ViridianMartText4:
 
 ViridianMartText5:
 	TX_FAR ViridianMartParcelQuestText
+	TX_SFX_KEY_ITEM
+	db "@"
+
+ViridianMartText6:
+	TX_FAR ViridianMartGetTMCase
 	TX_SFX_KEY_ITEM
 	db "@"
 

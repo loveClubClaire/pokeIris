@@ -96,42 +96,42 @@ AddItemToInventory_:
 	ret
 .addMachine
 	sub $BC ; ($C4 - $8 = $BC)
-	push bc 
+	push bc
 	push hl
 	ld c, $FF
 	ld b, $08
 .getByteOffsetLoop
-	inc c 
+	inc c
 	sub b
 	cp b
-	jr nc, .getByteOffsetLoop 
-	;a is bit to set ;c is byte offset 
-	ld b, $00 ;I'm preserving the value of a here  
+	jr nc, .getByteOffsetLoop
+	;a is bit to set ;c is byte offset
+	ld b, $00 ;I'm preserving the value of a here
 	ld hl, wTMCaseItems
-	add hl, bc 
-	;Don't do a bit shift if bit to set is zero 
+	add hl, bc
+	;Don't do a bit shift if bit to set is zero
 	cp b
 	jr z, .skipBitShift
-	ld b, $80 ;inc b ;set b to 1 
+	ld b, $80 ;inc b ;set b to 1
 .getBitPositionLoop 
 	sra b
-	dec a 
+	dec a
 	jr nz, .getBitPositionLoop
 	jr .addToTMCase
 .skipBitShift
-	inc b 
+	inc b
 .addToTMCase
 	ld a, [hl]
-	ld c, a 
-	or b 
-	ld [hl], a 
-	xor c 
+	ld c, a
+	or b
+	ld [hl], a
+	xor c
 	jr z, .skipTMCountIncrement
 	ld hl, wNumTMCaseItems
-	inc [hl] 
-.skipTMCountIncrement 
+	inc [hl]
+.skipTMCountIncrement
 	pop hl
-	pop bc 
+	pop bc
 	scf
 	ret
 
