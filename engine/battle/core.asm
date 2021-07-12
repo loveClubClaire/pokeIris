@@ -1897,6 +1897,9 @@ SendOutMon:
 	jp z, .skipDrawingEnemyHUDAndHPBar; if HP is zero, skip drawing the HUD and HP bar
 	call DrawEnemyHUDAndHPBar
 .skipDrawingEnemyHUDAndHPBar
+	xor a
+    ld [wLowHealthAlarmDuration], a ;Reset alarm duration counter 
+ 	ld [wLowHealthAlarmDisabled], a ;Re-enable the alarm
 	call DrawPlayerHUDAndHPBar
 	predef LoadMonBackPic
 	xor a
@@ -2036,7 +2039,7 @@ DrawPlayerHUDAndHPBar:
 	xor a
 	ld [wChannelSoundIDs + Ch4], a
 	ret
-.setLowHealthAlarm
+.setLowHealthAlarm	
 	ld hl, wLowHealthAlarm
 	set 7, [hl] ;enable low health alarm
 	ret

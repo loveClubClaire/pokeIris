@@ -459,6 +459,15 @@ Music_Cities1AlternateTempo::
 SECTION "Audio Engine 2", ROMX, BANK[AUDIO_2]
 
 Music_DoLowHealthAlarm::
+;	ld a, [wLowHealthAlarmDuration]
+;	cp $08 	;Play the low health alarm 8 times 
+;	jr nz, .continueAlarm 
+;	xor a 
+;	ld [wChannelSoundIDs + Ch4], a
+;	ret 
+
+
+.continueAlarm
 	ld a, [wLowHealthAlarm]
 	cp $ff
 	jr z, .disableAlarm
@@ -466,6 +475,18 @@ Music_DoLowHealthAlarm::
 	bit 7, a  ;alarm enabled?
 	ret z     ;nope
 
+	cp $86    ;Value of wLowHealthAlarm at the end of an alarm measure 
+	jr nz, .playAlarm
+
+	ld a, [wLowHealthAlarmDuration]
+	inc a
+	ld [wLowHealthAlarmDuration], a
+	cp $08
+	jr nz, .playAlarm
+	ld [wLowHealthAlarmDisabled], a ; prevent it from reactivating
+	jr .disableAlarm
+
+.playAlarm
 	and $7f   ;low 7 bits are the timer.
 	jr nz, .asm_21383 ;if timer > 0, play low tone.
 

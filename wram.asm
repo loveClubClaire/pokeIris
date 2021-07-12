@@ -3088,7 +3088,7 @@ wd728:: ; d728
 
 wLastRepelUsed:: ; d72a
 	ds 1
-	;Second byte unused 
+wLowHealthAlarmDuration:: ;d72b
 	ds 1
 
 wd72c:: ; d72c
