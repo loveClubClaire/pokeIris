@@ -459,15 +459,6 @@ Music_Cities1AlternateTempo::
 SECTION "Audio Engine 2", ROMX, BANK[AUDIO_2]
 
 Music_DoLowHealthAlarm::
-;	ld a, [wLowHealthAlarmDuration]
-;	cp $08 	;Play the low health alarm 8 times 
-;	jr nz, .continueAlarm 
-;	xor a 
-;	ld [wChannelSoundIDs + Ch4], a
-;	ret 
-
-
-.continueAlarm
 	ld a, [wLowHealthAlarm]
 	cp $ff
 	jr z, .disableAlarm
