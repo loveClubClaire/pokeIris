@@ -472,7 +472,7 @@ Music_DoLowHealthAlarm::
 	ld a, [wLowHealthAlarmDuration]
 	inc a
 	ld [wLowHealthAlarmDuration], a
-	cp $08
+	cp $08 							;After 8 measures disable the low health alarm
 	jr nz, .playAlarm
 	ld [wLowHealthAlarmDisabled], a ; prevent it from reactivating
 	jr .disableAlarm

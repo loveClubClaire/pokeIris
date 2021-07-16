@@ -3221,6 +3221,17 @@ _UsedCutText::
 	line "away with CUT!"
 	prompt
 
+_TreeCanBeCutText::
+	text "This tree can be"
+	line "CUT!"
+	done
+
+_AskToUseCutText::
+	text "This tree can be"
+	line "CUT!"
+	para "Want to use CUT?"
+	done
+
 
 SECTION "Pokedex Text", ROMX, BANK[POKEDEX_TEXT]
 

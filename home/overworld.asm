@@ -107,6 +107,11 @@ OverworldLoopLessDelay::
 	;select was pressed, so call functions here
 .notselect
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	
+	callba CheckForOverworldHMUse
+	;ld a, [$ffeb]
+	;and a 
+	;jp z, OverworldLoop ; jump if HM 
 	call CheckForHiddenObjectOrBookshelfOrCardKeyDoor
 	ld a, [$ffeb]
 	and a
