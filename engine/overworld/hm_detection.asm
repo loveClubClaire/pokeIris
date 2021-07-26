@@ -1,5 +1,4 @@
 CheckForOverworldHMUse::
-	ld [wUnusedD726], a
 	predef GetTileAndCoordsInFrontOfPlayer
 	ld a, [wCurMapTileset]
 	and a ; OVERWORLD
@@ -74,12 +73,36 @@ OverworldHMText:
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	cp $01
-	jr z, .didNotCut
-;TODO configure UsedCut to not flash annoyingly and maybe change text speed?
-	predef UsedCut
-
+	jr nz, .didCut
 .didNotCut
 	jp TextScriptEnd
+
+.didCut
+	ld [wCutTile], a
+	ld a, 1
+	ld [wActionResultOrTookBattleTurn], a ; used cut
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMonNicks
+	call GetPartyMonName
+	ld hl, UsedCutOverworldText
+	call PrintText
+	ld a, $ff
+	ld [wUpdateSpritesEnabled], a
+	callab InitCutAnimOAM
+	ld de, CutTreeBlockSwaps
+	callab ReplaceTreeTileBlock
+	callab RedrawMapView
+	callab AnimCut
+	ld a, $1
+	ld [wUpdateSpritesEnabled], a
+	ld a, SFX_CUT
+	call PlaySound
+	call UpdateSprites
+	ret
+
+UsedCutOverworldText:
+	TX_FAR _UsedCutText
+	db "@"
 
 TreeCanBeCutText:
 	TX_FAR _TreeCanBeCutText
@@ -88,4 +111,3 @@ TreeCanBeCutText:
 AskToUseCutText:
 	TX_FAR _AskToUseCutText
 	db "@"	
-

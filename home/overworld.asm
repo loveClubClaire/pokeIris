@@ -107,11 +107,7 @@ OverworldLoopLessDelay::
 	;select was pressed, so call functions here
 .notselect
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	
-	callba CheckForOverworldHMUse
-	;ld a, [$ffeb]
-	;and a 
-	;jp z, OverworldLoop ; jump if HM 
+	callba CheckForOverworldHMUse ;TODO configure so hidden items on trees can be accessed
 	call CheckForHiddenObjectOrBookshelfOrCardKeyDoor
 	ld a, [$ffeb]
 	and a
