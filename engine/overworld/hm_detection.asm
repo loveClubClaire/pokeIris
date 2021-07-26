@@ -1,5 +1,6 @@
 CheckForOverworldHMUse::
 	ld [wUnusedD726], a
+	predef GetTileAndCoordsInFrontOfPlayer
 	ld a, [wCurMapTileset]
 	and a ; OVERWORLD
 	jr z, .overworld
