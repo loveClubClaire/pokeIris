@@ -4,7 +4,7 @@ FuchsiaHouse2Script:
 FuchsiaHouse2TextPointers:
 	dw FuchsiaHouse2Text1
 	dw PickUpItemText
-	dw BoulderText
+	dw FuchsiaHouse2Text3
 	dw FuchsiaHouse2Text4
 	dw FuchsiaHouse2Text5
 
@@ -91,6 +91,11 @@ HM04ExplanationText:
 HM04NoRoomText:
 	TX_FAR _HM04NoRoomText
 	db "@"
+
+FuchsiaHouse2Text3:
+	TX_ASM
+	callab OverworldUseStrength
+	jp TextScriptEnd
 
 FuchsiaHouse2Text5:
 FuchsiaHouse2Text4:

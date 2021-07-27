@@ -25,40 +25,10 @@ OverworldHMText:
 	ld a, [wObtainedBadges] ; badges obtained
 	bit 1, a ; does the player have the Cascade Badge?
 	jr z, .canNotBeCut
-;TODO more testing 
 
-	;Routine which checks if anyone in the party has cut.
-	;Searches list from 0-5 and first pokemon with cut has their name used
-	;c counts which move we're looking at 
-	;d stores the number of pokemon in the party 
-	;e stores which pokemon in the party we're looking at 
-	xor a 
-	ld e, a
-	ld [wWhichPokemon], a
-	ld a, [wPartyCount]
-	ld d, a
-	ld hl, wPartyMons
-	ld bc, $08					;Offset of first attack from wPartyMonX
-	add hl, bc
-.checkTeamMovesLoop
-	ld a, [hl]
-	cp $0F						;Check if move at hl is cut 
-	jr z, .canBeCut 			;If yes, ask if player wants to cut 
-	inc hl 						;Check next move 
-	inc bc 						;Increment move counter 
-	ld a, c 
-	cp $0C 						;08 + 4 moves is 0C. If move counter is 0C increment pokemon counter 
-	jr nz, .checkTeamMovesLoop  
-	ld bc, $28					;+$28 gets the first move of the next mon in party
-	add hl, bc
-	ld bc, $08 					;Set bc back to $08 for move counter compare
-	inc e 
-	ld a, e
-	ld [wWhichPokemon], a       
-	cp a, d 					;If theres more mons to check loop otherwise 
-	jr nz, .checkTeamMovesLoop
-	jr .canNotBeCut 			;No mons know cut 
-
+	ld b, $0F	;Store the HM we're searching for in b for IsHMInParty
+ 	call IsHMInParty
+ 	jr z, .canBeCut
 
 .canNotBeCut
 	ld hl, TreeCanBeCutText
@@ -100,6 +70,47 @@ OverworldHMText:
 	call UpdateSprites
 	ret
 
+;TODO more testing 
+;b stores HM being searched for 
+;Returns z if HM is found, nz otherwise 
+IsHMInParty:
+	;Routine which checks if anyone in the party has given HM.
+	;Searches list from 0-5 and first pokemon with HM has their name used
+	;c counts which move we're looking at 
+	;d stores the number of pokemon in the party 
+	;e stores which pokemon in the party we're looking at 
+	xor a 
+	ld e, a
+	ld [wWhichPokemon], a
+	ld a, [wPartyCount]
+	ld d, a
+	ld hl, wPartyMons
+	ld a, b 					;Preserve value of b for later
+	ld bc, $08					;Offset of first attack from wPartyMonX
+	add hl, bc
+	ld b, a
+.checkTeamMovesLoop
+	ld a, [hl]
+	cp b						;Check if move at hl is the given HM 
+	ret z 						;If yes, return z
+	inc hl 						;Check next move 
+	inc c 						;Increment move counter 
+	ld a, c 
+	cp $0C 						;08 + 4 moves is 0C. If move counter is 0C increment pokemon counter 
+	jr nz, .checkTeamMovesLoop  
+	ld a, b
+	ld bc, $28					;+$28 gets the first move of the next mon in party
+	add hl, bc
+	ld c, $08 					;Set c back to $08 for move counter compare
+	ld b, a
+	inc e 
+	ld a, e
+	ld [wWhichPokemon], a       
+	cp a, d 					;If theres more mons to check loop otherwise 
+	jr nz, .checkTeamMovesLoop
+	inc a 						;Set nz flag and return
+	ret			 			    ;No mons know the HM
+
 UsedCutOverworldText:
 	TX_FAR _UsedCutText
 	db "@"
@@ -111,3 +122,31 @@ TreeCanBeCutText:
 AskToUseCutText:
 	TX_FAR _AskToUseCutText
 	db "@"	
+
+BoulderCanBeMovedText:
+	TX_FAR _BoulderText
+	db "@"
+
+OverworldUseStrength::
+	ld a, [wObtainedBadges] ; badges obtained
+	bit 1, a ; does the player have the Cascade Badge?
+	jr z, .canNotUseStrength
+
+	ld b, $46	;Store the HM we're searching for in b for IsHMInParty
+ 	call IsHMInParty
+ 	jr z, .canUseStrength
+
+.canNotUseStrength
+	ld hl, BoulderCanBeMovedText
+	call PrintText
+	ret
+
+.canUseStrength
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMonNicks
+	call GetPartyMonName
+	ld hl, wd728
+	set 0, [hl]
+	ld hl, UsedCutOverworldText
+	call PrintText
+	ret
