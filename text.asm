@@ -3232,6 +3232,22 @@ _AskToUseCutText::
 	para "Want to use CUT?"
 	done
 
+_AskToUseStrengthText::
+	text "A #MON may be"
+	line "able to move this."
+	para "Want to use"
+	line "STRENGTH?"
+	done
+
+_BoulderOverworldText::
+	text "A #MON may be"
+	line "able to move this."
+	done
+
+_StrengthInUseText::
+	text "Boulders may now"
+	line "be moved!"
+	done
 
 SECTION "Pokedex Text", ROMX, BANK[POKEDEX_TEXT]
 

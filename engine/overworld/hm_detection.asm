@@ -124,15 +124,34 @@ AskToUseCutText:
 	db "@"	
 
 BoulderCanBeMovedText:
-	TX_FAR _BoulderText
+	TX_FAR _BoulderOverworldText
+	db "@"
+
+AskToUseStrength:
+	TX_FAR _AskToUseStrengthText
+	db "@"
+
+UsedStrengthOverworldText:
+	TX_FAR _UsedStrengthText
+	db "@"
+
+StrengthInUse:
+	TX_FAR _StrengthInUseText
 	db "@"
 
 OverworldUseStrength::
-	ld a, [wObtainedBadges] ; badges obtained
-	bit 1, a ; does the player have the Cascade Badge?
-	jr z, .canNotUseStrength
+	ld hl, wd728 				;Check if Strength is already in use 
+	bit 0, [hl]
+	jr z, .strengthNotInUse
+	ld hl, StrengthInUse
+	call PrintText
+	ret
 
-	ld b, $46	;Store the HM we're searching for in b for IsHMInParty
+.strengthNotInUse
+	ld a, [wObtainedBadges] 	
+	bit 3, a 					;Does the player have the Rainbow Badge?
+	jr z, .canNotUseStrength
+	ld b, $46					;Store the HM we're searching for in b for IsHMInParty
  	call IsHMInParty
  	jr z, .canUseStrength
 
@@ -145,8 +164,30 @@ OverworldUseStrength::
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
-	ld hl, wd728
-	set 0, [hl]
-	ld hl, UsedCutOverworldText
+	ld hl, AskToUseStrength
 	call PrintText
+	ld a, 1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	cp $01
+	ret z 						;Return if not using Strength
+	ld hl, wd728 				;Set bit to enable Strength
+	set 0, [hl]
+	ld hl, UsedStrengthOverworldText
+	call PrintText
+	;Get the ID of pokemon using Strength for the cry
+	ld bc, $2C
+	ld hl, $d16b
+	ld a, [wWhichPokemon]
+.cryLoop
+	cp $00 
+	jr z, .loadCry
+	add hl, bc 
+	dec a 
+	jr .cryLoop
+.loadCry
+	ld a, [hl]
+	call PlayCry
+	call Delay3
 	ret
