@@ -963,8 +963,9 @@ GroundRoseText::
 	db "@"
 
 BoulderText::
-	TX_FAR _BoulderText
-	db "@"
+	TX_ASM
+	callab OverworldUseStrength
+	jp TextScriptEnd
 
 MartSignText::
 	TX_FAR _MartSignText
