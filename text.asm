@@ -3249,6 +3249,12 @@ _StrengthInUseText::
 	line "be moved!"
 	done
 
+_AskToUseSurfText::
+	text "The water is calm."
+	line "Want to SURF?"
+	done
+
+
 SECTION "Pokedex Text", ROMX, BANK[POKEDEX_TEXT]
 
 INCLUDE "text/pokedex.asm"

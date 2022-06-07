@@ -1,26 +1,58 @@
-CheckForOverworldHMUse::
+ CheckForOverworldHMUse::
 	predef GetTileAndCoordsInFrontOfPlayer
 	ld a, [wCurMapTileset]
 	and a ; OVERWORLD
 	jr z, .overworld
 	cp GYM
-	jr nz, .nothingToCut
-	ld a, [wTileInFrontOfPlayer]
-	cp $50 ; gym cut tree
-	jr nz, .nothingToCut
-	jr .canCut
+	jr z, .gym
+	ld hl, HMWaterTilesets
+	ld de, 1
+	call IsInArray ; does the current map allow surfing?
+	jr c, .waterTileset	
+	ret
 .overworld
-	dec a
 	ld a, [wTileInFrontOfPlayer]
 	cp $3d ; cut tree
 	jr z, .canCut
-.nothingToCut
+	jr .waterTileset
+.gym
+	ld a, [wTileInFrontOfPlayer]
+	cp $50 ; gym cut tree
+	jr z, .canCut
+.waterTileset
+	ld a, [wTileInFrontOfPlayer]
+	cp $14 ; water tile
+	jr z, .canSurf
 	ret
+
 .canCut
 	call EnableAutoTextBoxDrawing
-	tx_pre_jump OverworldHMText
+	tx_pre_jump OverworldCutText
+.canSurf ;Do work here because no text box is drawn if we can't surf
+	ld a, [wObtainedBadges] ; badges obtained
+	bit 4, a ; does the player have the Soul Badge?
+	jr z, .cantSurf
+	ld b, $39	;Store the HM we're searching for in b for IsHMInParty
+ 	call IsHMInParty
+ 	jr z, .callSurfText
+ 	;Surfboard item check 
+ 	ld b, $07
+ 	predef GetQuantityOfItemInBag
+ 	ld a, b
+	and a
+	jr z, .cantSurf
+.callSurfText
+	call EnableAutoTextBoxDrawing
+	tx_pre_jump OverworldSurfText
+.cantSurf
+	ret
+
+; tilesets with water (OVERWORLD & GYM belong in this list but are manually checked for earlier hence their removal)
+HMWaterTilesets:
+	db  FOREST, DOJO, SHIP, SHIP_PORT, CAVERN, FACILITY, PLATEAU
+	db $ff ; terminator
 	
-OverworldHMText:
+OverworldCutText:
 	TX_ASM
 	ld a, [wObtainedBadges] ; badges obtained
 	bit 1, a ; does the player have the Cascade Badge?
@@ -68,6 +100,31 @@ OverworldHMText:
 	ld a, SFX_CUT
 	call PlaySound
 	call UpdateSprites
+	ret
+
+OverworldSurfText:
+	TX_ASM
+	callba IsSurfingAllowed ;Handles can not surf error messages 
+	ld hl, wd728
+	bit 1, [hl]
+	res 1, [hl]
+	jp z, .didNotSurf 
+	ld hl, AskToUseSurfText
+	call PrintText
+	ld a, 1
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	cp $01
+	jr nz, .didSurf
+.didNotSurf
+	jp TextScriptEnd
+
+.didSurf
+	ld a, SURFBOARD
+	ld [wcf91], a
+	ld [wPseudoItemID], a
+	call UseItem
 	ret
 
 ;TODO more testing 
@@ -138,6 +195,10 @@ UsedStrengthOverworldText:
 StrengthInUse:
 	TX_FAR _StrengthInUseText
 	db "@"
+
+AskToUseSurfText:
+	TX_FAR _AskToUseSurfText
+	db "@"	
 
 OverworldUseStrength::
 	ld hl, wd728 				;Check if Strength is already in use 
