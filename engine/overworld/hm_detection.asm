@@ -20,9 +20,15 @@
 	cp $50 ; gym cut tree
 	jr z, .canCut
 .waterTileset
+	ld a, [wWalkBikeSurfState] ;No menu if player is already surfing
+	cp $02
+	jr z, .cantSurf
 	ld a, [wTileInFrontOfPlayer]
-	cp $14 ; water tile
-	jr z, .canSurf
+	ld hl, HMSurfTiles
+	ld de, 1
+	call IsInArray
+	;cp $14 ; water tile
+	jr c, .canSurf
 	ret
 
 .canCut
@@ -41,6 +47,10 @@
  	ld a, b
 	and a
 	jr z, .cantSurf
+	;;Store surfboard item name into memory 
+	ld a, $07
+	ld [wd11e], a
+	call GetItemName
 .callSurfText
 	call EnableAutoTextBoxDrawing
 	tx_pre_jump OverworldSurfText
@@ -50,6 +60,11 @@
 ; tilesets with water (OVERWORLD & GYM belong in this list but are manually checked for earlier hence their removal)
 HMWaterTilesets:
 	db  FOREST, DOJO, SHIP, SHIP_PORT, CAVERN, FACILITY, PLATEAU
+	db $ff ; terminator
+
+; shore tiles
+HMSurfTiles:
+	db $48, $32, $14
 	db $ff ; terminator
 	
 OverworldCutText:
@@ -83,9 +98,6 @@ OverworldCutText:
 	ld [wCutTile], a
 	ld a, 1
 	ld [wActionResultOrTookBattleTurn], a ; used cut
-	ld a, [wWhichPokemon]
-	ld hl, wPartyMonNicks
-	call GetPartyMonName
 	ld hl, UsedCutOverworldText
 	call PrintText
 	ld a, $ff
@@ -100,7 +112,7 @@ OverworldCutText:
 	ld a, SFX_CUT
 	call PlaySound
 	call UpdateSprites
-	ret
+	jp TextScriptEnd
 
 OverworldSurfText:
 	TX_ASM
@@ -125,7 +137,8 @@ OverworldSurfText:
 	ld [wcf91], a
 	ld [wPseudoItemID], a
 	call UseItem
-	ret
+	ld [wUnusedCC5B], a
+	jp TextScriptEnd
 
 ;TODO more testing 
 ;b stores HM being searched for 
@@ -149,7 +162,8 @@ IsHMInParty:
 .checkTeamMovesLoop
 	ld a, [hl]
 	cp b						;Check if move at hl is the given HM 
-	ret z 						;If yes, return z
+	jr z, .foundHM 				;If yes, found HM 
+	;ret z 						;If yes, return 
 	inc hl 						;Check next move 
 	inc c 						;Increment move counter 
 	ld a, c 
@@ -167,6 +181,10 @@ IsHMInParty:
 	jr nz, .checkTeamMovesLoop
 	inc a 						;Set nz flag and return
 	ret			 			    ;No mons know the HM
+.foundHM
+	call GetPartyMonName2       ;Store mon name at wcd6d
+	xor a 						;set z flag as HM was found
+	ret
 
 UsedCutOverworldText:
 	TX_FAR _UsedCutText
