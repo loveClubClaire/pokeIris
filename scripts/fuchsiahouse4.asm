@@ -215,7 +215,7 @@ FuchsiaHouse4Text1:
 .success
 	ld hl, wTempMoveNameBuffer 	
 	ld bc, 11 			;Replace the last character with @ so it prints correctly 
-	add hl, bc 			;This only effects 17/167 moves, I'm saying its worthwile 
+	add hl, bc 			;This only effects 17/167 moves, I'm saying its worthwhile
 	ld [hl], "@"
 	ld hl, MoveDeleterText8
 	push hl 

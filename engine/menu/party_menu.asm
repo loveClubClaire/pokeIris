@@ -7,6 +7,7 @@
 ; 03: learn TM/HM menu
 ; 04: swap pokemon positions menu
 ; 05: use evolution stone on pokemon menu
+; 06: move deleter menu
 ; otherwise, it is a message ID
 ; f0: poison healed
 ; f1: burn healed
@@ -44,6 +45,10 @@ RedrawPartyMenu_:
 	ld [wUnusedD71F + $01], a
 
 .loop
+	;update "which mons able" shift counter 
+	ld a, [wUnusedCD3D]
+	rlc a
+	ld [wUnusedCD3D], a
 	ld a, [de]
 	cp $FF ; reached the terminator?
 	jp z, .afterDrawingMonEntries
@@ -171,6 +176,8 @@ RedrawPartyMenu_:
 	jr z, .placeEvolutionStoneString ; if so, place the "NOT ABLE" string
 	inc hl
 	inc hl
+	cp EV_TRADE
+	jp z, .evTrade
 	cp EV_ITEM
 	jr nz, .checkEvolutionsLoop
 ; if it's a stone evolution entry
@@ -192,7 +199,7 @@ RedrawPartyMenu_:
 	add hl, bc
 	call PlaceString
 	pop hl
-	jr .printLevel
+	jp .printLevel
 .ableToEvolveText
 	db "ABLE@"
 .notAbleToEvolveText
@@ -244,6 +251,21 @@ RedrawPartyMenu_:
 	pop hl
 	call PrintText
 	jr .done
+
+.evTrade
+	ld a, [wEvoStoneItemID]
+	cp $1C
+	jp nz, .checkEvolutionsLoop
+	;if mon can evolve, load party position byte into d
+	;load which mons byte into a
+	;or both bytes and store result back to which mons byte
+	ld a, [wUnusedCD3D]
+	ld d, a
+	ld a, [wUnusedDA38]
+	or d
+	ld [wUnusedDA38], a
+	ld de, .ableToEvolveText
+	jp .placeEvolutionStoneString
 
 .deleteMoveMenu
 	push hl

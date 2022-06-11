@@ -10,9 +10,10 @@ Lab3Object:
 	sign 1, 4, 4 ; Lab3Text4
 	sign 2, 1, 5 ; Lab3Text5
 
-	db 2 ; objects
+	db 3 ; objects
 	object SPRITE_OAK_AIDE, 7, 2, STAY, DOWN, 1 ; person
 	object SPRITE_OAK_AIDE, 2, 3, WALK, 2, 2 ; person
+	object SPRITE_OAK_AIDE, 4, 2, STAY, DOWN, 6 ; person
 
 	; warp-to
 	warp_to 2, 7, CINNABAR_LAB_3_WIDTH ; CINNABAR_LAB_1

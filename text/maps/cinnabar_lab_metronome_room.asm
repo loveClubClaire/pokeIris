@@ -61,3 +61,50 @@ _Lab3Text3::
 _Lab3Text5::
 	text "An amber pipe!"
 	done
+
+_TradeEvoText1::
+	;text "Hi!"
+
+	text "I research the"
+	line "evolution of"
+	cont "#MON!"
+
+	;"Did you know?"
+	;para "Some #MON only"
+	;line "evolve after"
+	;cont "trading."
+
+	;para "But!"
+	
+	para "My new invention"
+	line "evolves them"
+	cont "without trading!"
+
+	para "Whatya say, wanna"
+	line "give it a try?"
+	done	
+
+_TradeEvoText2::
+	text "Oh... Well if you"
+	line "change your mind."
+	done
+	
+
+_TradeEvoText3::
+	text "None of your "
+	line "#MON seem intrested..."
+	done
+
+_TradeEvoText4::
+	text "Another success!"
+	done
+	
+
+_TradeEvoText5::
+	text "My machine needs"
+	line "to recharge..."
+
+	para "Go walk around"
+	line "for a while"
+	done
+	
