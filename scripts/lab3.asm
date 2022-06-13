@@ -62,28 +62,11 @@ Lab3Text5:
 	TX_FAR _Lab3Text5
 	db "@"
 
-TradeEvoText1:
-	TX_FAR _TradeEvoText1
-	db "@"
-
-TradeEvoText2:
-	TX_FAR _TradeEvoText2
-	db "@"
-
-TradeEvoText3:
-	TX_FAR _TradeEvoText3
-	db "@"
-
-TradeEvoText4:
-	TX_FAR _TradeEvoText4
-	db "@"
-
-TradeEvoText5:
-	TX_FAR _TradeEvoText5
-	db "@"
-
 Lab3Text6:
 	TX_ASM
+	ld hl, TradeEvoText5
+	CheckEvent EVENT_EVO_MACHINE_RECHARGING
+	jp nz, .scriptEnd
 	call SaveScreenTilesToBuffer2
 	ld hl, TradeEvoText1 
 	call PrintText
@@ -132,27 +115,50 @@ Lab3Text6:
 	ld [hl], LINK_STATE_TRADING
 	ld a, $01
 	ld [wForceEvolution], a ;Can't cancel this evolution! 
-	ld a, SFX_TRADE_MACHINE ;TODO Pick new sound!
+	ld a, SFX_TRADE_MACHINE
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
 	callab TryEvolvingMon 
 	ld hl, wLinkState
 	ld [hl], LINK_STATE_NONE
+	SetEvent EVENT_EVO_MACHINE_RECHARGING
 	;Normally invoked by TryEvolvingMon but ignored for trade_evos, suspect because CC room works differently 
 	call PlayDefaultMusic
 	call ReloadTilesetTilePatterns
-	jr .scriptEnd
+	jr .evoSriptEnd
 .noEffectTrade
 	ld hl, TradeEvoText3 
 	call PrintText
 .canceledTradeEvo
 	ld hl, TradeEvoText2
 	push hl
-.scriptEnd
+.evoSriptEnd
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
 	call LoadGBPal
 	;pop the proper text pointer to print 
 	pop hl
+.scriptEnd
 	call PrintText
 	jp TextScriptEnd
+
+
+TradeEvoText1:
+	TX_FAR _TradeEvoText1
+	db "@"
+
+TradeEvoText2:
+	TX_FAR _TradeEvoText2
+	db "@"
+
+TradeEvoText3:
+	TX_FAR _TradeEvoText3
+	db "@"
+
+TradeEvoText4:
+	TX_FAR _TradeEvoText4
+	db "@"
+
+TradeEvoText5:
+	TX_FAR _TradeEvoText5
+	db "@"

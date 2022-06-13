@@ -6,7 +6,7 @@ Lab3Object:
 	warp 3, 7, 3, CINNABAR_LAB_1
 
 	db 3 ; signs
-	sign 0, 4, 3 ; Lab3Text3
+	sign 0, 4, 4 ; Lab3Text3
 	sign 1, 4, 4 ; Lab3Text4
 	sign 2, 1, 5 ; Lab3Text5
 
