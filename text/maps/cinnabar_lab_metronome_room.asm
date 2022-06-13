@@ -63,18 +63,10 @@ _Lab3Text5::
 	done
 
 _TradeEvoText1::
-	;text "Hi!"
 
 	text "I research the"
 	line "evolution of"
 	cont "#MON!"
-
-	;"Did you know?"
-	;para "Some #MON only"
-	;line "evolve after"
-	;cont "trading."
-
-	;para "But!"
 	
 	para "My new invention"
 	line "evolves them"
