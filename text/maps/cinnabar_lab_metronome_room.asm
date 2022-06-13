@@ -91,8 +91,9 @@ _TradeEvoText2::
 	
 
 _TradeEvoText3::
-	text "None of your "
-	line "#MON seem intrested..."
+	text "It won't have any"
+	line "effect."
+	prompt
 	done
 
 _TradeEvoText4::
@@ -105,6 +106,6 @@ _TradeEvoText5::
 	line "to recharge..."
 
 	para "Go walk around"
-	line "for a while"
+	line "for a while."
 	done
 	

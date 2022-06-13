@@ -95,25 +95,20 @@ Lab3Text6:
 	call PrintText
 	jp TextScriptEnd
 .evolveTradeMon
-
 	;Initalize "which mons able" memory with 0 & 1 respectivally 
 	xor a
 	ld [wUnusedDA38], a
 	inc a
 	rrc a
 	ld [wUnusedCD3D], a
-
 	ld a, $1C
 	ld [wEvoStoneItemID], a
 	ld a, EVO_STONE_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
-	call DisplayPartyMenu ;DisplayPartyMenu sets c if B is pressed 
-	;pop bc 				;?
+	call DisplayPartyMenu ;DisplayPartyMenu sets carry if B is pressed 
 	jr c, .canceledTradeEvo
-	;ld a, b
-	;ld [wcf91], a
 	;load which mons can be evolved into c, 0 into b, whichMon into a
 	ld a, [wUnusedDA38]
 	ld c, a
@@ -131,30 +126,31 @@ Lab3Text6:
 	;if bit 0 is set, evolve mon, else don't 
 	bit 0, c
 	jr z, .noEffectTrade
-	jr .canceledTradeEvo
-	ld [wUnusedD08A], a
+	ld hl, TradeEvoText4
+	push hl 
+	ld hl, wLinkState
+	ld [hl], LINK_STATE_TRADING
 	ld a, $01
-	ld [wForceEvolution], a
-	ld a, SFX_HEAL_AILMENT
+	ld [wForceEvolution], a ;Can't cancel this evolution! 
+	ld a, SFX_HEAL_AILMENT ;TODO Pick new sound!
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
-	callab TryEvolvingMon ; try to evolve pokemon
-	ld a, [wEvolutionOccurred]
-	and a
-	jr z, .noEffectTrade
-	;pop af
-	;ld [wWhichPokemon], a
+	callab TryEvolvingMon 
+	;Normally invoked by TryEvolvingMon but ignored for trade_evos, suspect because CC room works differently 
+	call PlayDefaultMusic
+	call ReloadTilesetTilePatterns
+	jr .scriptEnd
 .noEffectTrade
-	ld hl, TradeEvoText3 ; TODO 
+	ld hl, TradeEvoText3 
 	call PrintText
-	jp TextScriptEnd
 .canceledTradeEvo
+	ld hl, TradeEvoText2
+	push hl
+.scriptEnd
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
 	call LoadGBPal
-	ld hl, TradeEvoText4 ; TODO 
+	;pop the proper text pointer to print 
+	pop hl
 	call PrintText
 	jp TextScriptEnd
-
-
-
