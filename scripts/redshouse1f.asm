@@ -67,6 +67,15 @@ MomHealText2:
 	db "@"
 
 RedsHouse1FText2: ; Mr. Mime
+	TX_ASM
+	ld a, $2A
+	call GetCryData
+	call PlaySound
+	ld hl, MrMimeText1
+	call PrintText
+	jp TextScriptEnd
+
+MrMimeText1:
 	TX_FAR _MrMimeText
 	db "@"
 
