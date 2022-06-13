@@ -132,10 +132,12 @@ Lab3Text6:
 	ld [hl], LINK_STATE_TRADING
 	ld a, $01
 	ld [wForceEvolution], a ;Can't cancel this evolution! 
-	ld a, SFX_HEAL_AILMENT ;TODO Pick new sound!
+	ld a, SFX_TRADE_MACHINE ;TODO Pick new sound!
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
 	callab TryEvolvingMon 
+	ld hl, wLinkState
+	ld [hl], LINK_STATE_NONE
 	;Normally invoked by TryEvolvingMon but ignored for trade_evos, suspect because CC room works differently 
 	call PlayDefaultMusic
 	call ReloadTilesetTilePatterns
