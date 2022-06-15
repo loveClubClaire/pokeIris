@@ -1235,8 +1235,10 @@ wFlags_0xcd60:: ; cd60
 ; bit 0: is player engaged by trainer (to avoid being engaged by multiple trainers simultaneously)
 ; bit 1: boulder dust animation (from using Strength) pending
 ; bit 3: using generic PC
+; bit 4: used for sprite updates -cs
 ; bit 5: don't play sound when A or B is pressed in menu
 ; bit 6: tried pushing against boulder once (you need to push twice before it will move)
+; bit 7: changing pokemon box -cs
 	ds 1
 
 	ds 9

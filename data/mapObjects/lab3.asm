@@ -13,7 +13,7 @@ Lab3Object:
 	db 3 ; objects
 	object SPRITE_OAK_AIDE, 7, 2, STAY, DOWN, 1 ; person
 	object SPRITE_OAK_AIDE, 2, 3, WALK, 2, 2 ; person
-	object SPRITE_OAK_AIDE, 4, 2, STAY, DOWN, 6 ; person
+	object SPRITE_OAK_AIDE, 0, 5, WALK, 1, 6 ; person
 
 	; warp-to
 	warp_to 2, 7, CINNABAR_LAB_3_WIDTH ; CINNABAR_LAB_1

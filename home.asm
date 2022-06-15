@@ -4177,6 +4177,10 @@ HandleMenuInput_::
 	ld [wAnimCounter], a 		 ; counter for pokemon shaking animation
 	call PlaceMenuCursor
 	call Delay3
+	ld a, [wFlags_0xcd60]
+	bit 7, a 					; are we selecting a new box in Bills PC?
+	jr z, .loop2
+	callba PrintNumPKMNInBox
 .loop2
 	push hl
 	ld a, [wPartyMenuAnimMonEnabled]

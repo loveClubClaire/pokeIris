@@ -146,7 +146,7 @@ BillsPCMenu:
 	ld [wPlayerMonNumber], a
 	ld hl, WhatText
 	call PrintText
-	coord hl, 9, 14
+	coord hl, 9, 14 ;cs- boxNum Border
 	ld b, 2
 	ld c, 9
 	call TextBoxBorder

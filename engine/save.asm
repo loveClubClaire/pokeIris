@@ -346,7 +346,11 @@ ChangeBox::
 	call UpdateSprites
 	ld hl, hFlags_0xFFF6
 	set 1, [hl]
+	ld hl, wFlags_0xcd60
+	set 7, [hl]
 	call HandleMenuInput
+	ld hl, wFlags_0xcd60
+	res 7, [hl]
 	ld hl, hFlags_0xFFF6
 	res 1, [hl]
 	bit 1, a ; pressed b
@@ -434,6 +438,19 @@ DisplayChangeBoxMenu:
 	call TextBoxBorder
 	ld hl, ChooseABoxText
 	call PrintText
+	coord hl, 11, 14 ;cs- boxNum mons Border
+	ld b, 2
+	ld c, 7
+	call TextBoxBorder
+	ld de, PokemonText
+	coord hl, 12, 15
+	call PlaceString
+	coord hl, 15, 16
+	ld [hl], "/"
+	coord hl, 16, 16
+	ld [hl], "2"
+	coord hl, 17, 16
+	ld [hl], "0"
 	coord hl, 11, 0
 	ld b, 12
 	ld c, 7
@@ -502,6 +519,9 @@ BoxNames:
 
 BoxNoText:
 	db "BOX No.@"
+
+PokemonText:
+	db "#MON@"
 
 EmptyAllSRAMBoxes:
 ; marks all boxes in SRAM as empty (initialisation for the first time the
