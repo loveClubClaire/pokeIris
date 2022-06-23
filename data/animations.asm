@@ -163,6 +163,10 @@ AttackAnimationPointers:
 	dw SuperFangAnim
 	dw SlashAnim
 	dw SubstituteAnim
+	dw XScissorAnim
+	dw ShadowBallAnim
+	dw OutrageAnim
+	dw DragonbreathAnim
 	dw StruggleAnim
 	dw ShowPicAnim
 	dw EnemyFlashAnim
@@ -1124,6 +1128,33 @@ SubstituteAnim:
 	db SE_SUBSTITUTE_MON, $FF
 	db $FF
 
+XScissorAnim:
+	db $04,$A4,$56
+	db SE_DARK_SCREEN_FLASH, $FF
+	db $FF
+
+ShadowBallAnim:
+	db SE_DARK_SCREEN_PALETTE, $A5
+	db $43,$44,$57
+	db $04,$5B,$0A
+	db SE_RESET_SCREEN_PALETTE, $FF
+	db $FF
+
+OutrageAnim:
+	db SE_DARKEN_MON_PALETTE, $FF
+	db SE_SPIRAL_BALLS_INWARD, $2f
+	db SE_RESET_SCREEN_PALETTE, $FF
+	db SE_DARK_SCREEN_FLASH, $FF
+	db $46,$A6,$04
+	db $FF
+
+DragonbreathAnim:
+	db $46,$A7,$1F
+	db $46,$FF,$1F
+	db $46,$FF,$1F
+	db $46,$FF,$58 ;cs - used to clear screen after enemy attack
+	db $FF
+
 BallTossAnim:
 	db $03,$FF,$06
 	db $FF
@@ -1347,6 +1378,62 @@ SubanimationPointers:
 	dw Subanimation53
 	dw Subanimation54
 	dw Subanimation55
+	dw Subanimation56
+	dw Subanimation57
+	dw Subanimation58
+
+Subanimation58:
+	db $01
+	db $2c,$30,$00
+
+Subanimation57:
+	db $8E
+	db $03,$30,$00
+	db $03,$B3,$00
+	db $03,$B4,$00
+	db $03,$45,$00
+	db $03,$B5,$00
+	db $03,$B6,$00
+	db $03,$B7,$00
+	db $03,$B8,$00
+	db $03,$B9,$00
+	db $03,$BA,$00
+	db $03,$BB,$00
+	db $03,$BC,$00
+	db $03,$BD,$00
+	db $03,$BE,$00
+	db $03,$BF,$00
+
+;TODO - SE_DELAY_ANIMATION_10 not empty draw
+Subanimation56:
+	db $51
+	;line
+	db $2b,$05,$02
+	db $2b,$0C,$02
+	;invert line
+	db $7a,$00,$02
+	db $7a,$08,$02
+	;empty draw for effect
+	db $2c,$00,$04
+	;line
+	db $2b,$11,$02
+	db $2b,$17,$02
+	;invert line
+	db $7a,$10,$02
+	db $7a,$18,$02
+	;empty draw for effect
+	db $2c,$00,$04
+	;line
+	db $2b,$1b,$02
+	db $2b,$20,$02
+	;invert line
+	db $7a,$B1,$02
+	db $7a,$B2,$02
+	;empty draw for effect
+	db $2c,$00,$04
+	;clear
+	db $2c,$00,$02
+	db $2c,$00,$00
 
 Subanimation04:
 	db $43
@@ -1539,6 +1626,7 @@ Subanimation1f:
 	db $0c,$41,$03
 	db $0c,$42,$03
 	db $0c,$21,$00
+
 
 Subanimation2e:
 	db $2e
@@ -2328,6 +2416,7 @@ FrameBlockPointers:
 	dw FrameBlock77
 	dw FrameBlock78
 	dw FrameBlock79
+	dw FrameBlock7A
 
 ; FrameBlock format is as follows:
 ; first byte = number of tiles in FrameBlock
@@ -3445,6 +3534,12 @@ FrameBlock79:
 	db $01
 	db $00,$00,$4e,$00
 
+FrameBlock7A:
+	db $02
+	db $06,$08,$47,$20
+	db $00,$02,$47,$20
+
+;x,y 0,0 is top left corner
 FrameBlockBaseCoords:
 	db $10,$68
 	db $10,$70
@@ -3622,7 +3717,22 @@ FrameBlockBaseCoords:
 	db $14,$50
 	db $18,$4C
 	db $1C,$48
-	db $48,$28
+	db $48,$28  ; BASECOORD_B0
+	db $30,$88  ; BASECOORD_B1
+    db $38,$90  ; BASECOORD_B2
+    db $60,$30  ; BASECOORD_B3
+    db $62,$32  ; BASECOORD_B4
+    db $32,$44  ; BASECOORD_B5
+    db $38,$48  ; BASECOORD_B6
+	db $44,$52  ; BASECOORD_B7
+	db $46,$60  ; BASECOORD_B8
+	db $42,$62  ; BASECOORD_B9
+	db $32,$64  ; BASECOORD_BA
+	db $22,$66  ; BASECOORD_BB
+	db $28,$70  ; BASECOORD_BC
+	db $36,$74  ; BASECOORD_BD
+	db $38,$78  ; BASECOORD_BE
+	db $40,$82  ; BASECOORD_BF
 
 FrameBlock00:
 	db $00,$00

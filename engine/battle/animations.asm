@@ -2534,6 +2534,10 @@ MoveSoundTable:
 	db SFX_BATTLE_26,         $f0,$ff ; SUPER_FANG
 	db SFX_NOT_VERY_EFFECTIVE,$01,$ff ; SLASH
 	db SFX_BATTLE_2C,         $d8,$04 ; SUBSTITUTE
+	db SFX_NOT_VERY_EFFECTIVE,$f0,$0c ; X_SCISSOR
+	db SFX_FAINT_FALL,        $FF,$FF ; SHADOW_BALL
+	db SFX_BATTLE_34,         $00,$80 ; OUTRAGE
+	db SFX_BATTLE_29,         $10,$04 ; DRAGONBREATH
 	db SFX_BATTLE_0B,         $00,$80 ; STRUGGLE
 	db SFX_BATTLE_0B,         $00,$80
 

@@ -8507,8 +8507,15 @@ StatModifierDownEffect:
 	ld a, [de]
 	cp ATTACK_DOWN_SIDE_EFFECT
 	jr c, .nonSideEffect
+	cp SPECIAL_DOWN15_SIDE_EFFECT ;only checks this side effect cause nothing else has a 15% chance. Could be altered if more moves used this
+	jr nz, .precent30
+	call BattleRandom
+	cp $28 ; 40/256 chance
+	jr .lowerSetup
+.precent30
 	call BattleRandom
 	cp $55 ; 85/256 chance for side effects
+.lowerSetup
 	jp nc, CantLowerAnymore
 	ld a, [de]
 	sub ATTACK_DOWN_SIDE_EFFECT ; map each stat to 0-3
@@ -8804,8 +8811,22 @@ ThrashPetalDanceEffect:
 	inc a
 	inc a
 	ld [de], a ; set thrash/petal dance counter to 2 or 3 at random
+	ld hl, wPlayerSelectedMove ;check who's attacking
 	ld a, [H_WHOSETURN]
+	and a
+	jr z, .thrashPetalDanceCompare
+	inc l
+.thrashPetalDanceCompare
+	ld a, [hl]
+	cp OUTRAGE ; play a different animation for outrage
+	ld a, [H_WHOSETURN] ;gotta set this here cause its add ANIM not ld
+	jr nz, .thrashPetalDanceAnim
+	ret
+	;add ANIM_B2
+	;jr .thrashPetalDancePlayAnim
+.thrashPetalDanceAnim
 	add ANIM_B0
+.thrashPetalDancePlayAnim
 	jp PlayBattleAnimation2
 
 SwitchAndTeleportEffect:

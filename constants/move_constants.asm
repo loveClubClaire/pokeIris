@@ -164,10 +164,15 @@ const_value = 1
 	const SUPER_FANG   ; a2
 	const SLASH        ; a3
 	const SUBSTITUTE   ; a4
+	const X_SCISSOR	   ; a5
+	const SHADOW_BALL  ; a6
+	const OUTRAGE	   ; a7
+	const DRAGONBREATH ; a8
+	const STRUGGLE	   ; a9
 
 NUM_ATTACKS EQU const_value + -1
 
-	const STRUGGLE
+
 
 	; Moves do double duty as animation identifiers.
 
