@@ -175,7 +175,7 @@ hSCX EQU $FFAE
 hSCY EQU $FFAF
 hWY  EQU $FFB0
 
-;ZachNote - Each bit is assoicated with a button on the gameboy 
+;cs - Each bit is assoicated with a button on the gameboy 
 hJoyLast     EQU $FFB1
 hJoyReleased EQU $FFB2
 hJoyPressed  EQU $FFB3
