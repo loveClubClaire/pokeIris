@@ -31,10 +31,10 @@ PrintNumPKMNInBox:
 	ld a, [de]
 	;Make the first digit 0 or 1 or just print 20
 	ld d, " "
-	cp $09
+	cp $0A
 	jr c, .printFirstDigit
 	ld d, "1"
-	cp $13
+	cp $14
 	jr c, .printFirstDigit
 	;If box full, print 20 without doing math
 	coord hl, 14, 16
@@ -45,7 +45,7 @@ PrintNumPKMNInBox:
 .printFirstDigit
 	coord hl, 13, 16
 	ld [hl], d
-	cp $09
+	cp $0A
 	jr c, .printSecondDigit
 	sub $0A
 .printSecondDigit
