@@ -532,7 +532,7 @@ ItemUseBall:
 	ld [wd11e], a
 	ld a, [wBattleType]
 	dec a ; is this the old man battle?
-	jr z, .oldManCaughtMon ; if so, don't give the player the caught Pokémon
+	jp z, .oldManCaughtMon ; if so, don't give the player the caught Pokémon
 
 	ld hl, ItemUseBallText05
 	call PrintText
@@ -589,6 +589,15 @@ ItemUseBall:
 	jr nz, .done
 	ld hl, BoxFullReminderTXT
 	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .done ; return if No was chosen
+	ld hl, vChars2 + $780
+	ld de, PokeballTileGraphics
+	lb bc, BANK(PokeballTileGraphics), $01
+	call CopyVideoData
+	callba ChangeBox
 	jr .done
 
 .oldManCaughtMon

@@ -2777,8 +2777,10 @@ _BoxIsFullReminderText::
 	cont "It won't hold"
 	cont "more #MON."
 	
-	para "Change the BOX at"
-	line "a #MON CENTER!"
+	para "Would you like"
+	line "to change the"
+	cont "#MON BOX?"
+
 	prompt
 
 INCLUDE "text/maps/pallet_town.asm"
