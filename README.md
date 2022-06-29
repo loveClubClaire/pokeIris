@@ -2,7 +2,7 @@
 
 Version 0.5.0
 
-PokéIris is a modified version of Pokémon Red & Blue built upon the Shin Pokémon Red and Blue: Lite Patch which itself is built upon the Pret team's Pokered disassembly. The goal of PokéIris is to add bug fixes, AI improvements, quality of life improvements, and (eventually) postgame content all while still maintaining the look and feel of the original game. Allowing players old and new to return to Kanto and experience the adventure which awaits without getting distracted by buggy or missing mechanics
+PokéIris is a modified version of Pokémon Red & Blue built upon the Shin Pokémon Red and Blue: Lite Patch which itself is built upon the Pret team's Pokered disassembly. The goal of PokéIris is to add bug fixes, AI improvements, quality of life improvements, and (eventually) postgame content all while maintaining the look and feel of the original game. Allowing players old and new to return to Kanto and experience the adventure which awaits without getting distracted by buggy or missing mechanics
 
 
 # Feature list:
