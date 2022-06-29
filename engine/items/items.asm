@@ -593,6 +593,9 @@ ItemUseBall:
 	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .done ; return if No was chosen
+	;TODO add save sound and figure out why enemy display sometimes stays put
+	;ld a, BANK(Music_PkmnHealed)
+	;ld [wAudioROMBank], a
 	ld hl, vChars2 + $780
 	ld de, PokeballTileGraphics
 	lb bc, BANK(PokeballTileGraphics), $01

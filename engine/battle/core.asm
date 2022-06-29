@@ -8822,8 +8822,6 @@ ThrashPetalDanceEffect:
 	ld a, [H_WHOSETURN] ;gotta set this here cause its add ANIM not ld
 	jr nz, .thrashPetalDanceAnim
 	ret
-	;add ANIM_B2
-	;jr .thrashPetalDancePlayAnim
 .thrashPetalDanceAnim
 	add ANIM_B0
 .thrashPetalDancePlayAnim

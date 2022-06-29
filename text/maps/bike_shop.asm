@@ -41,6 +41,8 @@ _BikeShopText_1d82f::
 	para "You can take it"
 	line "on CYCLING ROAD"
 	cont "and in caves!"
+	;Hold down B
+	;to go faster!
 	done
 
 _BikeShopText_1d834::
